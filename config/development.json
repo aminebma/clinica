@@ -1,0 +1,8 @@
+{
+  "name": "Clinica - Development",
+  "database": {
+    "name": "db-clinica",
+    "ip": "localhost",
+    "port": "27017"
+  }
+}

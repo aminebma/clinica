@@ -1,9 +1,9 @@
-var configValues = require('./config')
+const config = require('config')
 
 module.exports = {
-
     getDbConnectionString: function(){
-        return 'mongodb://' + configValues.uname + ':' + configValues.pwd + '@localhost:27017/db-clinica'
+        console.log('Application name: '+config.get("name"))
+        console.log('Database name: '+config.get("database.name"))
+        return `mongodb://${config.get("database.username")}:${config.get("database.password")}@${config.get("database.ip")}:${config.get("database.port")}/${config.get("database.name")}`
     }
-
 }

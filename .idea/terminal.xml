@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TerminalProjectOptionsProvider">
+    <envs>
+      <env key="clinica_admin_username" value="admin" />
+      <env key="clinica_admin_password" value="admin" />
+    </envs>
+  </component>
+</project>
