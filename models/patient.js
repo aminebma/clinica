@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema()
+const Schema = mongoose.Schema
 
 const patientSchema = new Schema({
     firstName: {
@@ -16,10 +16,14 @@ const patientSchema = new Schema({
     },
     address: {
         type: String,
+        minlength:5,
+        maxlength: 200,
         required: true
     },
     phoneNumber: {
         type: String,
+        minlength: 9,
+        maxlength: 14,
         required: true
     },
     mail: {
@@ -31,8 +35,7 @@ const patientSchema = new Schema({
     password: {
         type: String,
         minlength: 4,
-        maxlength: 4,
-        required: true
+        maxlength: 4
     }
 })
 

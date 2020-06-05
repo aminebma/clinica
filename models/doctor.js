@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema()
+const Schema = mongoose.Schema
 
 const doctorSchema = new Schema({
     firstName: {
@@ -27,14 +27,13 @@ const doctorSchema = new Schema({
     phoneNumber: {
         type: String,
         minlength: 9,
-        maxlength: 11,
+        maxlength: 14,
         required: true
     },
     password: {
         type: String,
         minlength: 4,
-        maxlength: 4,
-        required: true
+        maxlength: 4
     }
 })
 

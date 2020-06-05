@@ -5,6 +5,8 @@
       <env key="clinica_admin_username" value="admin" />
       <env key="clinica_admin_password" value="admin" />
       <env key="NODE_ENV" value="development" />
+      <env key="clinica_twilio_accountSid" value="ACc0871053a930a4e2cc48330c499ed912" />
+      <env key="clinica_twilio_authtoken" value="2aa3afade0db82be2ecaa76c45f795b3" />
     </envs>
   </component>
 </project>

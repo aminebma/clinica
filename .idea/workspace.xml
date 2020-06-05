@@ -2,10 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdb03c8c-e1df-494c-8dec-e294df55652e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/models/doctor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/patient.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/terminal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/terminal.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/custom-environment-variables.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/custom-environment-variables.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/doctor.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/doctor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/patient.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/patient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/accounts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/accounts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/doctors.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/doctors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/requests.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/requests.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +51,8 @@
       <envs>
         <env name="clinica_admin_username" value="admin" />
         <env name="clinica_admin_password" value="admin" />
+        <env name="clinica_twilio_accountsid" value="ACc0871053a930a4e2cc48330c499ed912" />
+        <env name="clinica_twilio_authtoken" value="2aa3afade0db82be2ecaa76c45f795b32aa3afade0db82be2ecaa76c45f795b3" />
       </envs>
       <method v="2" />
     </configuration>
@@ -58,7 +67,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1591368168666</updated>
-      <workItem from="1591368176972" duration="17695000" />
+      <workItem from="1591368176972" duration="23641000" />
     </task>
     <servers />
   </component>
@@ -66,18 +75,18 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591383541467">
+    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591392983503">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1591383541467" />
+    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1591392983503" />
     <state x="499" y="179" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591384984943">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="499" y="179" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.864@0.0.1536.864" timestamp="1591384984943" />
-    <state x="503" y="194" key="EnvironmentVariablesDialog" timestamp="1591384437573">
+    <state x="503" y="194" key="EnvironmentVariablesDialog" timestamp="1591393042549">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="503" y="194" key="EnvironmentVariablesDialog/0.0.1536.864@0.0.1536.864" timestamp="1591384437573" />
+    <state x="503" y="194" key="EnvironmentVariablesDialog/0.0.1536.864@0.0.1536.864" timestamp="1591393042549" />
     <state x="548" y="187" key="FileChooserDialogImpl" timestamp="1591382627405">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -146,10 +155,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state width="1515" height="277" key="GridCell.Tab.3.right/0.0.1536.864@0.0.1536.864" timestamp="1591383617238" />
-    <state x="277" y="75" key="SettingsEditor" timestamp="1591384439308">
+    <state x="277" y="75" key="SettingsEditor" timestamp="1591393045162">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1591384439308" />
+    <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1591393045162" />
     <state x="0" y="0" width="1332" height="598" key="dock-window-1" timestamp="1591382027334">
       <screen x="0" y="0" width="1536" height="864" />
     </state>

@@ -2,5 +2,9 @@
   "database": {
     "username": "clinica_admin_username",
     "password": "clinica_admin_password"
+  },
+  "sms":{
+    "accountSid": "clinica_twilio_accountsid",
+    "authToken": "clinica_twilio_authtoken"
   }
 }
