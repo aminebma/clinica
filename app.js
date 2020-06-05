@@ -22,9 +22,9 @@ app.use('/api/doctors', doctors)
 
 mongoose.connect(configIndex.getDbConnectionString(), {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.connection.once('open',function(){
-    console.log('Successfully connected to the database')
+    console.log('Successfully connected to the database...')
 }).on('error', function(error){
-    console.log('Failed connecting to the database.\n',error)
+    console.log(`Failed connecting to the database.\n${error}`)
 })
 
 //Port

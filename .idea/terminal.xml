@@ -4,6 +4,7 @@
     <envs>
       <env key="clinica_admin_username" value="admin" />
       <env key="clinica_admin_password" value="admin" />
+      <env key="NODE_ENV" value="development" />
     </envs>
   </component>
 </project>
