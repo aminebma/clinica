@@ -4,8 +4,6 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const configIndex = require('./config/index')
 const accounts = require('./routes/accounts')
-const patients = require('./routes/patients')
-const doctors = require('./routes/doctors')
 const app = express()
 
 app.use(express.json())
@@ -17,8 +15,6 @@ if(app.get('env') === 'development')
     app.use(morgan('tiny'))
 
 app.use('/api/accounts', accounts)
-app.use('/api/patients', patients)
-app.use('/api/doctors', doctors)
 
 mongoose.connect(configIndex.getDbConnectionString(), {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.connection.once('open',function(){
