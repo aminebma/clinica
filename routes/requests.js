@@ -22,13 +22,13 @@ router.post('/add_request', (req, res)=>{
     })
 })
 
-function validateRequest(request){
-    const schema = {
-        patientId: Joi.string().required(),
-        doctorId: Joi.string().required()
-    }
-
-    return Joi.validate(request, schema)
-}
+// function validateRequest(request){
+//     const schema = {
+//         patientId: Joi.string().required(),
+//         doctorId: Joi.string().required()
+//     }
+//
+//     return Joi.validate(request, schema)
+// }
 
 module.exports = router
