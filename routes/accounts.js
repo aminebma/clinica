@@ -6,10 +6,12 @@ const _ = require('lodash')
 const bCrypt = require('bcrypt')
 const Patient = require('../models/patient')
 
+//Creating a Patient account in the database
 router.post('/sign_in', async (req, res) => {
 
     const{error} = validateAccount(req.body)
     if(error) return res.status(400).send(error)
+
     let patient = await Patient.findOne({phoneNumber: req.body.phoneNumber})
     if(patient) return res.status(400).send("Utilisateur déjà inscrit.")
 
@@ -33,7 +35,7 @@ router.post('/sign_in', async (req, res) => {
                 await patient.save()
                 res.send(patient)
             }catch(err){
-                res.status(500).send("Erreur lors de l'ajout dans la base de données")
+                res.status(500).send(err.message)
             }
         })
         .catch(err => {
@@ -42,6 +44,7 @@ router.post('/sign_in', async (req, res) => {
         })
 })
 
+//Validating the input data
 function validateAccount(patient){
     const schema = {
         firstName: Joi.string().min(3).max(35).required(),
