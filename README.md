@@ -55,7 +55,7 @@ Pour déployer le serveur, clonez le repository au sein de votre machine (Positi
 git clone https://www.github.com/aminebma/clinica.git
 ```
 Téléchargez ensuite les packages Node.js nécéssaires
-```npm
+```bash
 npm i
 ``` 
 Une fois que vous aurez fais cela, vous aurez besoin de créer une base de données MongoDB, le nom par défaut doit être db-clinica, mais vous pouvez modifier cela dans les fichiers du dossier "config/".
@@ -98,13 +98,13 @@ export clinica_server_port = votrePort
 
 ## Lancement du serveur
 Pour lancer le serveur, il suffit d'exécuter la commande suivante
-```node
+```bash
 node app.js
 ```
 
 ## Exécuter les tests
 Pour exécuter les tests, lancez la commande 
-```npm
+```bash
 npm run test
 ```
 
