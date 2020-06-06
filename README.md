@@ -49,7 +49,12 @@ Chaque médecin dispose d'un tableau de bord qui lui affichera les indicateurs s
 - Évolution journalière du nombre de demandes (entre J et J-1)
 
 # Contacts
-Vous pouvez contacter les développeurs de l'application:   
-- Mohamed Amine BENBAKHTA: [gm_benbakhta@esi.dz](mailto:gm_benbakhta@esi.dz)    
-- Lotfi Rdjem DARSOUNI: [gl_darsouni@esi.dz](mailto:gl_darsouni@esi.dz)    
-- Younes MORSI: [gy_morsi@esi.dz](mailto:gy_morsi@esi.dz)
+- Mohamed Amine BENBAKHTA: 
+    - [gm_benbakhta@esi.dz](mailto:gm_benbakhta@esi.dz)
+    - [LinkedIn](https://www.linkedin.com/in/mohamed-amine-benbakhta)    
+- Lotfi Rdjem DARSOUNI: 
+    - [gl_darsouni@esi.dz](mailto:gl_darsouni@esi.dz) 
+    - [LinkedIn](https://www.linkedin.com/in/lotfi-rdjem-darsouni-250747176)   
+- Younes MORSI: 
+    - [gy_morsi@esi.dz](mailto:gy_morsi@esi.dz)
+    - [LinkedIn](https://www.linkedin.com/in/younes-morsi-35722a188)
