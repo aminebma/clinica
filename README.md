@@ -48,8 +48,73 @@ Chaque médecin dispose d'un tableau de bord qui lui affichera les indicateurs s
 - Nombre de demandes traités du jour en cours
 - Évolution journalière du nombre de demandes (entre J et J-1)
 
-# Contacts
-Vous pouvez contacter les développeurs de l'application:   
-- Mohamed Amine BENBAKHTA: [gm_benbakhta@esi.dz](mailto:gm_benbakhta@esi.dz)    
-- Lotfi Rdjem DARSOUNI: [gl_darsouni@esi.dz](mailto:gl_darsouni@esi.dz)    
-- Younes MORSI: [gy_morsi@esi.dz](mailto:gy_morsi@esi.dz)
+# Déploiement
+## Installation
+Pour déployer le serveur, clonez le repository au sein de votre machine (Positionnez-vous dans le dossier où vous souhaitez cloner le repository)
+```bash
+git clone https://www.github.com/aminebma/clinica.git
+```
+Téléchargez ensuite les packages Node.js nécéssaires
+```bash
+npm i
+``` 
+Une fois que vous aurez fais cela, vous aurez besoin de créer une base de données MongoDB, le nom par défaut doit être db-clinica, mais vous pouvez modifier cela dans les fichiers du dossier "config/".
+
+##Initialisation des variables d'environnement
+Le serveur utilise des variables d'environnement afin d'assurer une meilleure sécurité des secrets. 
+Ces variables sont:
+1. Nom d'utilisateur de l'administrateur de la base de données: clinica_admin_username
+2. Mot de passe de l'administrateur de la base de données: clinica_admin_password
+3. SID du compte Twilio (Il faudra créer un compte [Twilio](www.twilio.com)): clinica_twilio_accountSid
+4. Le token d'authentification Twilio: clinica_twilio_authToken
+5. L'environnement dans lequel vous déployez ce serveur, peut prendre les valeurs:
+    - deveploment
+    - production
+6. L'addresse ip du serveur: clinica_server_ip
+7. Le port d'écoute: clinica_server_port
+
+(Si aucune valeur n'est spécifiée, l'environnement de développement sera considéré).
+
+Sur windows:
+```bash
+set clinica_admin_username = votreUsernameAdmin
+set clinica_admin_password = votreMotDepasseAdmin
+set clinica_twilio_accountSid = votreAccountSid
+set clinica_twilio_authToken= votreAuthToken
+set NODE_ENV = votreEnvironnement
+set clinica_server_ip = ip.de.votre.server
+set clinica_server_port = votrePort
+```
+Sur Linux/Mac
+```bash
+export clinica_admin_username = votreUsernameAdmin
+export clinica_admin_password = votreMotDepasseAdmin
+export clinica_twilio_accountSid = votreAccountSid
+export clinica_twilio_authToken= votreAuthToken
+export NODE_ENV = votreEnvironnement
+export clinica_server_ip = ip.de.votre.server
+export clinica_server_port = votrePort
+```
+
+## Lancement du serveur
+Pour lancer le serveur, il suffit d'exécuter la commande suivante
+```bash
+node app.js
+```
+
+## Exécuter les tests
+Pour exécuter les tests, lancez la commande 
+```bash
+npm run test
+```
+
+# Contacts   
+- Mohamed Amine BENBAKHTA: 
+    - [gm_benbakhta@esi.dz](mailto:gm_benbakhta@esi.dz)
+    - [LinkedIn](https://www.linkedin.com/in/mohamed-amine-benbakhta)    
+- Lotfi Rdjem DARSOUNI: 
+    - [gl_darsouni@esi.dz](mailto:gl_darsouni@esi.dz) 
+    - [LinkedIn](https://www.linkedin.com/in/lotfi-rdjem-darsouni-250747176)   
+- Younes MORSI: 
+    - [gy_morsi@esi.dz](mailto:gy_morsi@esi.dz)
+    - [LinkedIn](https://www.linkedin.com/in/younes-morsi-35722a188)

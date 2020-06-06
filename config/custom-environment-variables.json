@@ -6,5 +6,9 @@
   "sms":{
     "accountSid": "clinica_twilio_accountsid",
     "authToken": "clinica_twilio_authtoken"
+  },
+  "server": {
+    "ip": "clinica_server_ip",
+    "port": "clinica_server_port"
   }
 }
