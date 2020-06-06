@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bdb03c8c-e1df-494c-8dec-e294df55652e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/accounts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/accounts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/requests.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/requests.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +59,23 @@
       <option name="presentableId" value="Default" />
       <updated>1591368168666</updated>
       <workItem from="1591368176972" duration="25633000" />
-      <workItem from="1591397468491" duration="4519000" />
+      <workItem from="1591397468491" duration="5207000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591392983503">

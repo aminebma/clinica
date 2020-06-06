@@ -23,18 +23,23 @@ router.post('/sign_in', async (req, res) => {
             from: '+12056516382',
             to: patient.phoneNumber
         })
-        .then(message => console.log(`Message send to ${message.to}. Content: ${message.body}`))
-        .catch(err => console.log(err.message));
+        .then(async message => {
+            console.log(`Message send to ${message.to}. Content: ${message.body}`)
 
-    const salt = await bCrypt.genSalt(10)
-    patient._doc.password = await bCrypt.hash(pass,salt)
+            const salt = await bCrypt.genSalt(10)
+            patient._doc.password = await bCrypt.hash(pass,salt)
 
-    try{
-        await patient.save()
-        res.send(patient)
-    }catch(err){
-        res.status(500).send("Erreur lors de l'ajout dans la base de données")
-    }
+            try{
+                await patient.save()
+                res.send(patient)
+            }catch(err){
+                res.status(500).send("Erreur lors de l'ajout dans la base de données")
+            }
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(400).send(err.message)
+        })
 })
 
 function validateAccount(patient){
