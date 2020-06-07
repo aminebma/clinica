@@ -33,7 +33,9 @@ function validateRequest(request){
     const schema = Joi.object({
         patientId: Joi.string().required(),
         doctorId: Joi.string().required(),
-        body: [[Joi.string().min(3).max(100).required()], Joi.string().min(5).max(25), Joi.string()]
+        symptoms: [Joi.string().min(3).max(100).required()],
+        treatments: Joi.string().min(5).max(25),
+        picture: Joi.string()
     })
 
     return schema.validate(request)

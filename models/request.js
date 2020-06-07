@@ -10,22 +10,19 @@ const requestSchema = new Schema({
         type: mongoose.Types.ObjectId,
         required: true
     },
-    body:{
-        type:{
-            symptoms: {
-                type: [String],
-                minlength: 3,
-                maxlength: 100,
-                required: true
-            },
-            treatments: {
-                type: String,
-                minlength: 5,
-                maxlength: 25
-            },
-            picture: { type: String }
-        },
+    symptoms:{
+        type: [String],
+        minlength: 3,
+        maxlength: 100,
         required: true
+    },
+    treatments:{
+        type: String,
+        minlength: 5,
+        maxlength: 25
+    },
+    picture:{
+        type: String
     }
 })
 
