@@ -36,3 +36,6 @@ const ip = config.get("server.ip")
 
 //Starting the server
 app.listen(port, ip, () => console.log(`Listening on ${ip}:${port}`))
+
+
+

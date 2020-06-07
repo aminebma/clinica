@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const patientSchema = new Schema({
+    status:{
+      type: String,
+      minlength: 7,
+      maxlength: 8,
+    },
     firstName: {
         type: String,
         minlength: 3,

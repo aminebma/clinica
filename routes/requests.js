@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Joi = require('joi')
+const Joi = require('@hapi/joi')
 const Request = require('../models/request')
 
 //Get a doctor's requests
@@ -30,13 +30,13 @@ router.post('/add_request', async (req, res)=>{
 
 //Validating the input data
 function validateRequest(request){
-    const schema = {
+    const schema = Joi.object({
         patientId: Joi.string().required(),
         doctorId: Joi.string().required(),
         body: [[Joi.string().min(3).max(100).required()], Joi.string().min(5).max(25), Joi.string()]
-    }
+    })
 
-    return Joi.validate(request, schema)
+    return schema.validate(request)
 }
 
 module.exports = router
