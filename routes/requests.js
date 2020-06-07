@@ -17,7 +17,9 @@ router.post('/add_request', async (req, res)=>{
     const request = new Request({
         patientId: req.body.patientId,
         doctorId: req.body.doctorId,
-        body: req.body.body
+        symptoms: req.body.symptoms,
+        treatments: req.body.treatments,
+        picture: req.body.picture
     })
 
     try {
@@ -33,7 +35,7 @@ function validateRequest(request){
     const schema = Joi.object({
         patientId: Joi.string().required(),
         doctorId: Joi.string().required(),
-        symptoms: [Joi.string().min(3).max(100).required()],
+        symptoms: Joi.array().items(Joi.string().min(3).max(100)).required(),
         treatments: Joi.string().min(5).max(25),
         picture: Joi.string()
     })
