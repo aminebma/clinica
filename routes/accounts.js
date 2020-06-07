@@ -38,6 +38,7 @@ router.post('/sign_in', async (req, res) => {
         }).catch(err => res.send(err))
 })
 
+//Verifying the patient's account
 router.post('/sign_in/verify',async (req,res)=>{
 
     const {error} = validateToken(req.body)

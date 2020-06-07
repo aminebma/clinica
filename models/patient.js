@@ -4,8 +4,7 @@ const Schema = mongoose.Schema
 const patientSchema = new Schema({
     status:{
       type: String,
-      minlength: 7,
-      maxlength: 8,
+      enum: ['pending','approved','rejected']
     },
     firstName: {
         type: String,

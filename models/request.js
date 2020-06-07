@@ -23,6 +23,13 @@ const requestSchema = new Schema({
     },
     picture:{
         type: String
+    },
+    response:{
+        type: String
+    },
+    status:{
+        type: String,
+        enum: ['pending','answered']
     }
 })
 
