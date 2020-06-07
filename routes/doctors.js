@@ -3,7 +3,7 @@ const router = express.Router()
 const Doctor = require('../models/doctor')
 
 router.get('/', async (req, res) => {
-    await Doctor.find((err, doctors)=>{
+    await Doctor.find({},{password: 0},(err, doctors)=>{
         if(err) throw err
         res.send(doctors)
     })
