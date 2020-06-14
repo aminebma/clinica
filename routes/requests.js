@@ -1,6 +1,34 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('@hapi/joi')
+const multer = require('multer')
+const storageManager = multer.diskStorage({
+    destination: function(req, file, callback){
+        callback(null, './public/')
+    },
+    filename: function(req, file, callback){
+        callback(null,new Date().toDateString() + '-' + req.body.patientId.substring(3,10) + '-' +file.originalname)
+    }
+})
+
+//Filtering uploaded files
+const imageFilter = (req, file, callback)=>{
+    if(file.mimetype==='image/jpeg' || file.mimetype === 'image/png')
+        //Accept file
+        callback(null,true)
+    else
+        //Reject file
+        callback(new Error('Type de fichier non autorisé'),false)
+}
+
+const imageUpload = multer({
+    storage: storageManager,
+    limits:{
+        fileSize: 1024*1024*10
+    },
+    fileFilter: imageFilter
+
+})
 const Request = require('../models/request')
 
 //Get a doctor's requests
@@ -10,7 +38,7 @@ router.get('/:id',async (req, res)=>{
 })
 
 //Add a new request to the database
-router.post('/add_request', async (req, res)=>{
+router.post('/add_request', imageUpload.single('picture'),async (req, res)=>{
     const {error} = validateRequest(req.body)
     if(error) return res.status(400).send(error)
 
@@ -19,7 +47,7 @@ router.post('/add_request', async (req, res)=>{
         doctorId: req.body.doctorId,
         symptoms: req.body.symptoms,
         treatments: req.body.treatments,
-        picture: req.body.picture,
+        picture: req.file.path,
         status: 'pending'
     })
 
