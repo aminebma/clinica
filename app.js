@@ -30,10 +30,6 @@ mongoose.connection.once('open',function(){
     console.log(`Failed connecting to the database.\n${error}`)
 })
 
-app.get('/', (req,res)=>{
-    res.send('Hello there !')
-})
-
 //Environment Port and Ip
 const port = config.get("server.port")
 const ip = "192.168.1.9"
