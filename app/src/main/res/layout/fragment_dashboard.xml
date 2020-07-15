@@ -5,13 +5,40 @@
     android:id="@+id/frameLayout7"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard" >
+    tools:context=".Dashboard">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dashboard"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/requestsChart"
+        android:layout_width="345dp"
+        android:layout_height="295dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/evolution"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Taux d'évolution du nombre de demandes de diagnostique:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/requestsChart"
+        app:layout_constraintStart_toStartOf="@+id/requestsChart"
+        app:layout_constraintTop_toBottomOf="@+id/answered" />
+
+    <TextView
+        android:id="@+id/answered"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Nombre de demandes de diagnostique traitées:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/requestsChart"
+        app:layout_constraintStart_toStartOf="@+id/requestsChart"
+        app:layout_constraintTop_toBottomOf="@+id/requestsChart" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

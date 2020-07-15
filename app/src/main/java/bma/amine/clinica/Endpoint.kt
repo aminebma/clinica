@@ -12,10 +12,10 @@ interface Endpoint {
     fun getMedecins(): Call<ArrayList<Doctor>>
 
     @GET("/{id}")
-    fun getDemandes(@Path("id") id:String): Call<List<bma.amine.clinica.Request>>
+    fun getDemandes(@Path("id") id:String): Call<List<Request>>
 
-    @GET("/{id}/all")
-    fun getToutesDemandes(@Path("id") id:String): Call<List<bma.amine.clinica.Request>>
+    @GET("/api/requests/{id}/all")
+    fun getAllRequests(@Path("id") id:String): Call<List<Request>>
 
     @Multipart
     @POST("/ajouter_conseil")
