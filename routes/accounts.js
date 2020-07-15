@@ -16,28 +16,48 @@ router.post('/sign-up', async (req, res) => {
     if(error) return res.status(400).send(error)
 
     let patient = await Patient.findOne({phoneNumber: req.body.phoneNumber})
-    if(patient) return res.status(400).send("Utilisateur déjà inscrit.")
-
-    patient = new Patient(_.pick(req.body, ['firstName','lastName','address','phoneNumber','mail']))
-
-    await client.verify.services.create({friendlyName: 'Clinica', codeLength: 4})
-        .then(async service => {
-            console.log(service.sid)
-            sid = service.sid
-            await client.verify.services(service.sid)
-                .verifications
-                .create({to: req.body.phoneNumber, channel: 'sms'})
-                .then(async verification => {
-                    console.log(verification.status)
-                    try{
-                        patient._doc.status = verification.status
-                        await patient.save()
-                        res.send(service.sid)
-                    }catch(err){
-                        res.status(500).send(err)
-                    }
+    if(patient) {
+        if(patient._doc.status === 'approved') return res.status(400).send("Utilisateur déjà inscrit.")
+        else {
+            await client.verify.services.create({friendlyName: 'Clinica', codeLength: 4})
+                .then(async service => {
+                    console.log(service.sid)
+                    sid = service.sid
+                    await client.verify.services(service.sid)
+                        .verifications
+                        .create({to: req.body.phoneNumber, channel: 'sms'})
+                        .then(async verification => {
+                            console.log(verification.status)
+                            try{
+                                res.send(service.sid)
+                            }catch(err){
+                                res.status(500).send(err)
+                            }
+                        }).catch(err => res.send(err))
                 }).catch(err => res.send(err))
-        }).catch(err => res.send(err))
+        }
+    } else{
+        patient = new Patient(_.pick(req.body, ['firstName','lastName','address','phoneNumber','mail']))
+
+        await client.verify.services.create({friendlyName: 'Clinica', codeLength: 4})
+            .then(async service => {
+                console.log(service.sid)
+                sid = service.sid
+                await client.verify.services(service.sid)
+                    .verifications
+                    .create({to: req.body.phoneNumber, channel: 'sms'})
+                    .then(async verification => {
+                        console.log(verification.status)
+                        try{
+                            patient._doc.status = verification.status
+                            await patient.save()
+                            res.send(service.sid)
+                        }catch(err){
+                            res.status(500).send(err)
+                        }
+                    }).catch(err => res.send(err))
+            }).catch(err => res.send(err))
+    }
 })
 
 //Verifying the patient's account
@@ -53,7 +73,7 @@ router.post('/sign-up/verify',async (req,res)=>{
             console.log(verification_check.status)
             if(verification_check.status==='approved'){
                 const salt = await bCrypt.genSalt(10)
-                const pass = await bCrypt.hash(req.body.code,salt)
+                const pass = await bCrypt.hash(req.body.code.toString(),salt)
 
                 try{
                     const patient = await Patient.findOneAndUpdate({phoneNumber: req.body.phoneNumber, status: 'pending'},{
@@ -70,7 +90,12 @@ router.post('/sign-up/verify',async (req,res)=>{
             else {
                 res.status(400).send(new Error('Le code entré est incorrect.'))
             }
-        }).catch(err => res.send(err))
+        }).catch(
+            err => {
+                console.error(err)
+                res.send(err)
+            }
+        )
 })
 
 //Connecting
