@@ -59,17 +59,17 @@ class ValidateAccount : Fragment() {
                             "phoneNumber" to arguments?.getString("phoneNumber")
                         )
                         val pref =
-                            requireActivity().getSharedPreferences("appData", Context.MODE_PRIVATE)
+                            requireActivity().getSharedPreferences("clinicaData", Context.MODE_PRIVATE)
                         pref.edit()
                             .putBoolean("isConnected", true)
-                            .putBoolean("isMedecin", false)
+                            .putBoolean("isDoctor", false)
                             .putString("id", response.body())
                             .putString("firstName", arguments?.getString("firstName"))
                             .putString("lastName", arguments?.getString("lastName"))
                             .putString("address", arguments?.getString("address"))
                             .putString("phoneNumber", arguments?.getString("phoneNumber"))
                             .apply()
-                        //requireActivity().findNavController(R.id.navhost).navigate(R.id.action_confirmInscription_to_accueilPatient2, bundle)
+                        requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homePatient, bundle)
                     }
                 }
             })

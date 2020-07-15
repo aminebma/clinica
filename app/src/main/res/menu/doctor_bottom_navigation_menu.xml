@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homePageDoctor"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="Accueil"/>
+    <item
+        android:id="@+id/dashboardDoctor"
+        android:enabled="true"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Tableau de bord"/>
+    <item
+        android:id="@+id/logoutDoctor"
+        android:enabled="true"
+        android:icon="@drawable/ic_logout"
+        android:title="Déconnexion"
+        />
+</menu>

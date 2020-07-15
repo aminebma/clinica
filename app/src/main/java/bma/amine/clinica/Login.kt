@@ -27,10 +27,10 @@ class Login : Fragment() {
         // Inflate the layout for this fragment
         var pref = requireActivity().getSharedPreferences("clinicaData", Context.MODE_PRIVATE)
         if(pref.getBoolean("isConnected", false)){
-            //if(pref.getBoolean("isDoctor", false))
-                //requireActivity().findNavController(R.id.navhost).navigate(R.id.action_choixCompte_to_accueilMedecin)
-            //else
-                //requireActivity().findNavController(R.id.navhost).navigate(R.id.action_choixCompte_to_accueilPatient2)
+            if(pref.getBoolean("isDoctor", false))
+                requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homeDoctor)
+            else
+                requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homePatient)
         }
 
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -74,7 +74,7 @@ class Login : Fragment() {
                                 .putString("address", patient.address)
                                 .putString("phoneNumber", patient.phoneNumber)
                                 .apply()
-                            //requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_accueilPatient2, bundle)
+                            requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homePatient, bundle)
                         }
                         else{
                             val doctor = response.body()
@@ -96,8 +96,7 @@ class Login : Fragment() {
                                 .putString("address", doctor.speciality)
                                 .putString("phoneNumber", doctor.phoneNumber)
                                 .apply()
-                            //requireActivity().findNavController(R.id.navhost)
-                                //.navigate(R.id.action_loginMedecin_to_accueilMedecin, bundle)
+                            requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homeDoctor, bundle)
                         }
                     }
                 }
