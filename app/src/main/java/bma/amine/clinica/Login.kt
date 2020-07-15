@@ -1,11 +1,14 @@
 package bma.amine.clinica
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -38,8 +41,14 @@ class Login : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val logoAnimator = ObjectAnimator.ofFloat(logoLogin,View.TRANSLATION_Y, 30f)
+        logoAnimator.repeatCount = Animation.INFINITE
+        logoAnimator.repeatMode = ObjectAnimator.REVERSE
+        logoAnimator.duration = 1500
+        logoAnimator.start()
+
         btnLogin.setOnClickListener {
-            val compte = Account(numTel.text.toString(), motDePasse.text.toString())
+            val compte = Account(phoneNumber.editText?.text.toString(), password.editText?.text.toString())
             val call = RetrofitService.endpoint.signIn(compte)
             call.enqueue(object: Callback<User> {
                 override fun onFailure(call: Call<User>, t: Throwable) {
