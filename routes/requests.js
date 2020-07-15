@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('@hapi/joi')
+const moment = require('moment')
 const multer = require('multer')
 const storageManager = multer.diskStorage({
     destination: function(req, file, callback){
@@ -31,10 +32,26 @@ const imageUpload = multer({
 })
 const Request = require('../models/request')
 
-//Get a doctor's requests
+//Get a doctor's pending requests
 router.get('/:id',async (req, res)=>{
     const requests = await Request.find({doctorId: req.params.id, status: 'pending'})
     res.send(requests)
+})
+
+//Get today's and yesterday's requests of a doctor
+router.get('/:id/all', async (req,res)=> {
+    const today = moment.utc(moment())
+    const yesterday = moment.utc(moment()).subtract(1, 'day')
+    await Request.find({
+        patientId: req.params.id,
+        date: {
+            $gte: yesterday,
+            $lte: today
+        }
+    }, async (err, requests) => {
+        if (err) throw err
+        res.send(requests)
+    })
 })
 
 //Add a new request to the database
@@ -74,6 +91,7 @@ router.post('/response',async (req, res)=>{
 //Validating the input data
 function validateRequest(request){
     const schema = Joi.object({
+        date: Joi.date().required(),
         patientId: Joi.string().required(),
         doctorId: Joi.string().required(),
         symptoms: Joi.array().items(Joi.string().min(3).max(100)).required(),

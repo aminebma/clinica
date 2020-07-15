@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const requestSchema = new Schema({
+    date: {
+        type: Date,
+        required: true
+    },
     patientId: {
         type: mongoose.Types.ObjectId,
         required: true
