@@ -37,10 +37,10 @@ interface Endpoint {
     @POST("/sign_in/medecin")
     fun connexionMedecin(@Body account: Account): Call<Doctor>
 
-    @POST("/sign_up")
-    fun inscription(@Body patient: Patient): Call<String>
+    @POST("/api/accounts/sign-up")
+    fun signUp(@Body patient: Patient): Call<String>
 
-    @POST("/sign_up/confirm")
-    fun confirmInscription(@Body account: Account): Call<String>
+    @POST("/api/accounts/sign-up/verify")
+    fun validateAccount(@Body account: AccountValidation): Call<String>
 
 }

@@ -9,5 +9,26 @@
         android:id="@+id/login"
         android:name="bma.amine.clinica.Login"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_signUp"
+            app:destination="@id/signUp" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUp"
+        android:name="bma.amine.clinica.SignUp"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUp_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_signUp_to_validateAccount"
+            app:destination="@id/validateAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/validateAccount"
+        android:name="bma.amine.clinica.ValidateAccount"
+        android:label="fragment_validate_account"
+        tools:layout="@layout/fragment_validate_account" />
 </navigation>

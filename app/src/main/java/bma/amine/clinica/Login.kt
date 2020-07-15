@@ -18,9 +18,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * A simple [Fragment] subclass.
- */
 class Login : Fragment() {
 
     override fun onCreateView(
@@ -109,7 +106,7 @@ class Login : Fragment() {
         }
 
         btnSignUp.setOnClickListener {
-            //requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_inscription2)
+            requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_signUp)
         }
     }
 
