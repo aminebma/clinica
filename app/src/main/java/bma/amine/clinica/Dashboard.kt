@@ -39,7 +39,7 @@ class Dashboard : Fragment() {
             .endpoint
             .getAllRequests(
                 requireActivity()
-                    .getSharedPreferences("appData", Context.MODE_PRIVATE)
+                    .getSharedPreferences("clinicaData", Context.MODE_PRIVATE)
                     .getString("id","")!!
             )
         call.enqueue(object: Callback<List<Request>> {
@@ -50,34 +50,42 @@ class Dashboard : Fragment() {
 
             override fun onResponse(call: Call<List<Request>>, response: Response<List<Request>>) {
                 if(response.isSuccessful){
-                    val requests = response.body()
-                    val todayRequests = requests!!.filter { it.date.subSequence(0,10) == SimpleDateFormat("yyyy-MM-dd").format(Date()) }
-                    val yesterdayRequests = requests.subtract(todayRequests)
-                    val answeredRequests = requests!!.filter {
-                        it.date.subSequence(0,10) == SimpleDateFormat("yyyy-MM-dd").format(Date())
-                                && it.status=="answered"
+                    if(response.body()?.size != 0){
+                        val requests = response.body()
+                        val todayRequests = requests!!.filter { it.date.subSequence(0,10) == SimpleDateFormat("yyyy-MM-dd").format(Date()) }
+                        val yesterdayRequests = requests.subtract(todayRequests)
+                        val answeredRequests = requests!!.filter {
+                            it.date.subSequence(0,10) == SimpleDateFormat("yyyy-MM-dd").format(Date())
+                                    && it.status=="answered"
+                        }
+
+                        val requestsNumber = ArrayList<PieEntry>()
+                        requestsNumber.add(PieEntry(todayRequests.size.toFloat(), "Aujourd'hui"))
+                        requestsNumber.add(PieEntry(yesterdayRequests.size.toFloat(), "Hier"))
+
+                        val pieDataSet = PieDataSet(requestsNumber, "           Nombre de demandes de diagnostique")
+                        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS.toList())
+
+                        val pieData = PieData(pieDataSet)
+                        pieData.setValueTextSize(14f)
+
+                        requestsChart.data = pieData
+
+                        requestsChart.description.isEnabled = false
+                        requestsChart.setEntryLabelTextSize(10f)
+                        requestsChart.animateXY(500,500)
+
+                        answered.text = "Nombre de demandes de diagnostique traitées:\n${answeredRequests.size}"
+                        if(todayRequests.size!=0)
+                            evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n${(todayRequests.size-yesterdayRequests.size)*100/todayRequests.size}"
+                        else
+                            evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n-100%"
+                    }
+                    else{
+                        evolution.text = ""
+                        answered.text = "Vous n'avez reçu aucune demande de diagnostique"
                     }
 
-                    val requestsNumber = ArrayList<PieEntry>()
-                    requestsNumber.add(PieEntry(todayRequests.size.toFloat(), "Aujourd'hui"))
-                    requestsNumber.add(PieEntry(yesterdayRequests.size.toFloat(), "Hier"))
-
-                    val pieDataSet = PieDataSet(requestsNumber, "           Nombre de demandes de diagnostique")
-                    pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS.toList())
-
-                    val pieData = PieData(pieDataSet)
-
-                    requestsChart.data = pieData
-
-                    requestsChart.description.isEnabled = false
-
-                    requestsChart.animateXY(500,500)
-
-                    answered.text = "Nombre de demandes de diagnostique traitées:\n${answeredRequests.size}"
-                    if(todayRequests.size!=0)
-                        evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n${(todayRequests.size-yesterdayRequests.size)*100/todayRequests.size}"
-                    else
-                        evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n-100%"
                 }
             }
 
