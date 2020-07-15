@@ -10,5 +10,8 @@
   "server": {
     "ip": "clinica_server_ip",
     "port": "clinica_server_port"
+  },
+  "auth": {
+    "jwtPK": "clinica_jwt_pk"
   }
 }

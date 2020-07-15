@@ -5,10 +5,12 @@ const Joi = require('@hapi/joi')
 const _ = require('lodash')
 const bCrypt = require('bcrypt')
 const Patient = require('../models/patient')
+const Doctor = require('../models/doctor')
 const client = require('twilio')(config.get("sms.accountSid"), config.get("sms.authToken"))
+const jwt = require('jsonwebtoken')
 
 //Creating a Patient account in the database
-router.post('/sign_in', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
 
     const {error} = validateAccount(req.body)
     if(error) return res.status(400).send(error)
@@ -39,7 +41,7 @@ router.post('/sign_in', async (req, res) => {
 })
 
 //Verifying the patient's account
-router.post('/sign_in/verify',async (req,res)=>{
+router.post('/sign-up/verify',async (req,res)=>{
 
     const {error} = validateToken(req.body)
     if(error) return res.status(400).send(error)
@@ -71,6 +73,49 @@ router.post('/sign_in/verify',async (req,res)=>{
         }).catch(err => res.send(err))
 })
 
+//Connecting
+router.post('/sign-in', async(req, res)=>{
+    const { error } = validateLogin(req.body)
+    if(error) return res.status(400).send(error)
+
+    await Patient.findOne({phoneNumber: req.body.phoneNumber})
+        .then(async patient =>{
+            if(!patient){
+                await Doctor.findOne({phoneNumber: req.body.phoneNumber})
+                    .then(async doctor => {
+                        if(!doctor) return res.status(400).send('Incorrect phone number or password')
+
+                        const validPass = (req.body.password===doctor._doc.password) ? true : false
+                        if(!validPass) return res.status(400).send('Incorrect phone number or password.')
+
+                        delete doctor._doc.password
+                        const token = jwt.sign({_id: doctor._doc._id}, config.get('auth.jwtPK'))
+                        doctor._doc.jwt = token
+                        doctor._doc.type = 1
+                        return res.send(doctor)
+                    })
+                    .catch(e => {
+                        console.error(e.message)
+                        res.send(e.message)
+                    })
+            }
+            else {
+                const validPass = await bCrypt.compare(req.body.password, patient._doc.password)
+                if (!validPass) return res.status(400).send('Incorrect phone number or password.')
+
+                delete patient._doc.password
+                const token = jwt.sign({_id: patient._doc._id}, config.get('auth.jwtPK'))
+                patient.jwt = token
+                patient.type = 0
+                res.send(patient)
+            }
+        })
+        .catch(e => {
+            console.error(e.message)
+            res.send(e.message)
+        })
+})
+
 //Validating the input data
 function validateAccount(patient){
     const schema = Joi.object({
@@ -92,6 +137,14 @@ function validateToken(code){
     })
 
     return schema.validate(code)
+}
+
+function validateLogin(account){
+    const schema = Joi.object({
+        phoneNumber: Joi.string().min(9).max(14).required(),
+        password: Joi.string().min(4).max(4).required()
+    })
+    return schema.validate(account)
 }
 
 module.exports = router
