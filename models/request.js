@@ -14,15 +14,25 @@ const requestSchema = new Schema({
         type: mongoose.Types.ObjectId,
         required: true
     },
+    patientFirstName: {
+        type: String,
+        minlength: 3,
+        maxlength: 35,
+        required: true
+    },
+    patientLastName: {
+        type: String,
+        minlength: 3,
+        maxlength: 20,
+        required: true
+    },
     symptoms:{
         type: [String],
-        minlength: 3,
         maxlength: 100,
         required: true
     },
     treatments:{
         type: String,
-        minlength: 5,
         maxlength: 25
     },
     picture:{

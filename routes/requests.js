@@ -5,10 +5,10 @@ const moment = require('moment')
 const multer = require('multer')
 const storageManager = multer.diskStorage({
     destination: function(req, file, callback){
-        callback(null, './public/')
+        callback(null, './public/images')
     },
     filename: function(req, file, callback){
-        callback(null,new Date().toDateString() + '-' + req.body.patientId.substring(3,10) + '-' +file.originalname)
+        callback(null,moment().format('DD-MM-YYYY') + '-' + Math.floor(Math.random() * (99999 - 11111) + 11111) + '-' +file.originalname + '.png')
     }
 })
 
@@ -32,6 +32,7 @@ const imageUpload = multer({
 })
 const Request = require('../models/request')
 
+
 //Get a doctor's pending requests
 router.get('/:id',async (req, res)=>{
     const requests = await Request.find({doctorId: req.params.id, status: 'pending'})
@@ -43,7 +44,7 @@ router.get('/:id/all', async (req,res)=> {
     const today = moment.utc(moment())
     const yesterday = moment.utc(moment()).subtract(1, 'day')
     await Request.find({
-        patientId: req.params.id,
+        doctorId: req.params.id,
         date: {
             $gte: yesterday,
             $lte: today
@@ -55,16 +56,19 @@ router.get('/:id/all', async (req,res)=> {
 })
 
 //Add a new request to the database
-router.post('/add_request', imageUpload.single('picture'),async (req, res)=>{
-    const {error} = validateRequest(req.body)
-    if(error) return res.status(400).send(error)
+router.post('/new', imageUpload.single('picture'),async (req, res)=>{
+    // const {error} = validateRequest(req.body)
+    // if(error) return res.status(400).send(error)
 
     let request = new Request({
+        date: req.body.date,
         patientId: req.body.patientId,
         doctorId: req.body.doctorId,
+        patientFirstName: req.body.patientFirstName,
+        patientLastName: req.body.patientLastName,
         symptoms: req.body.symptoms,
         treatments: req.body.treatments,
-        picture: req.file.path,
+        picture: req.file.filename,
         status: 'pending'
     })
 
@@ -78,8 +82,8 @@ router.post('/add_request', imageUpload.single('picture'),async (req, res)=>{
 
 //Answering a request
 router.post('/response',async (req, res)=>{
-    const response = req.body.response.replace(/[#\\<>]/gi,'')
-    const updatedRequest = await Request.findOneAndUpdate({_id: req.body.id},{
+    const response = req.body.answer.replace(/[#\\<>]/gi,'')
+    const updatedRequest =await Request.findByIdAndUpdate(req.body.id,{
         $set:{
             response: response,
             status: 'answered'
@@ -88,18 +92,20 @@ router.post('/response',async (req, res)=>{
     res.send(updatedRequest._id)
 })
 
-//Validating the input data
-function validateRequest(request){
-    const schema = Joi.object({
-        date: Joi.date().required(),
-        patientId: Joi.string().required(),
-        doctorId: Joi.string().required(),
-        symptoms: Joi.array().items(Joi.string().min(3).max(100)).required(),
-        treatments: Joi.string().min(5).max(25),
-        picture: Joi.string()
-    })
-
-    return schema.validate(request)
-}
+// //Validating the input data
+// function validateRequest(request){
+//     const schema = Joi.object({
+//         date: Joi.string().required(),
+//         patientId: Joi.string().required(),
+//         doctorId: Joi.string().required(),
+//         patientFirstName: Joi.string().min(3).max(35).required(),
+//         patientLastName: Joi.string().min(3).max(20).required(),
+//         symptoms: Joi.array().items(Joi.string().max(100)).required(),
+//         treatments: Joi.string().max(25),
+//         picture: Joi.string()
+//     })
+//
+//     return schema.validate(request)
+// }
 
 module.exports = router
