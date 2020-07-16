@@ -26,9 +26,18 @@ class RequestWorker (val context: Context, val workParameters: WorkerParameters)
     }
 
     private fun addRequest(){
-        val picture = File(inputData.getString("picturePath"))
-        var requestBody = RequestBody.create(MediaType.parse("image/jpeg"), picture)
-        val picturePart = MultipartBody.Part.createFormData("picture", picture.name, requestBody)
+        var requestBody: RequestBody
+        var picturePart: MultipartBody.Part
+        if(inputData.getString("picturePath") != ""){
+            val picture = File(inputData.getString("picturePath"))
+            requestBody = RequestBody.create(MediaType.parse("image/jpeg"), picture)
+            picturePart = MultipartBody.Part.createFormData("picture", picture.name, requestBody)
+        }
+        else{
+            val picture = " "
+            requestBody = RequestBody.create(MediaType.parse("image/jpeg"), picture)
+            picturePart = MultipartBody.Part.createFormData("picture", " ", requestBody)
+        }
         val patientId = RequestBody.create(MediaType.parse("multipart/form-data"), inputData.getString("patientId"))
         val doctorId = RequestBody.create(MediaType.parse("multipart/form-data"), inputData.getString("doctorId"))
         val patientFirstName = RequestBody.create(MediaType.parse("multipart/form-data"), inputData.getString("patientFirstName"))

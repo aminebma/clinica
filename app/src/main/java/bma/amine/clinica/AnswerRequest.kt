@@ -1,5 +1,6 @@
 package bma.amine.clinica
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.Constants.MessagePayloadKeys.SENDER_ID
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import kotlinx.android.synthetic.main.fragment_answer_request.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,6 +73,13 @@ class AnswerRequest : Fragment() {
                                     Snackbar.make(requireView(), "Réponse envoyée !", Snackbar.LENGTH_SHORT)
                                         .setAction("D'accord"){}
                                         .show()
+//                                    val fm = FirebaseMessaging.getInstance()
+//                                    fm.send(
+//                                        RemoteMessage.Builder("${requireActivity().getSharedPreferences("clinicaData", Context.MODE_PRIVATE).getString("FCM","")}@fcm.googleapis.com")
+//                                        .setMessageId(response.body()!!)
+//                                        .addData("Message", "Vous avez reçu une réponse !")
+//                                        .addData("my_action", "SAY_HELLO")
+//                                        .build())
                                     requireActivity().findNavController(R.id.navhost).navigate(R.id.action_answerRequest_to_homeDoctor)
                                 }
                             }

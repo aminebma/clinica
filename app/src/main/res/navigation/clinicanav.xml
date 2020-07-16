@@ -39,7 +39,11 @@
         android:id="@+id/validateAccount"
         android:name="bma.amine.clinica.ValidateAccount"
         android:label="fragment_validate_account"
-        tools:layout="@layout/fragment_validate_account" />
+        tools:layout="@layout/fragment_validate_account" >
+        <action
+            android:id="@+id/action_validateAccount_to_homePatient"
+            app:destination="@id/homePatient" />
+    </fragment>
     <fragment
         android:id="@+id/homePatient"
         android:name="bma.amine.clinica.HomePatient"

@@ -69,7 +69,7 @@ class ValidateAccount : Fragment() {
                             .putString("address", arguments?.getString("address"))
                             .putString("phoneNumber", arguments?.getString("phoneNumber"))
                             .apply()
-                        requireActivity().findNavController(R.id.navhost).navigate(R.id.action_login_to_homePatient, bundle)
+                        requireActivity().findNavController(R.id.navhost).navigate(R.id.action_validateAccount_to_homePatient, bundle)
                     }
                 }
             })

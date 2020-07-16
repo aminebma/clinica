@@ -1,5 +1,6 @@
 package bma.amine.clinica
 
 object ServerUrl {
-    val url = "http://192.168.1.9:3000"
+    //TODO Set the Server URL
+    val url = "http://4bdc3768bb61.ngrok.io"
 }
