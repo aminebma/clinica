@@ -156,6 +156,7 @@ class NewRequest : Fragment() {
         }
         return checkedIds
     }
+
     fun openGallery(){
         val selectImageIntent = Intent(
             Intent.ACTION_GET_CONTENT, MediaStore.Images.Media

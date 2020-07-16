@@ -76,7 +76,7 @@ class Dashboard : Fragment() {
                         requestsChart.animateXY(500,500)
 
                         if(todayRequests.size!=0)
-                            evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n${(todayRequests.size-yesterdayRequests.size)*100/todayRequests.size}"
+                            evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n${(todayRequests.size-yesterdayRequests.size)*100/todayRequests.size} %"
                         else
                             evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n-100%"
                     }
