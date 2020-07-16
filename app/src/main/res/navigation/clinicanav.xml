@@ -57,5 +57,17 @@
         <action
             android:id="@+id/action_homeDoctor_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_homeDoctor_to_answerRequest"
+            app:destination="@id/answerRequest" />
+    </fragment>
+    <fragment
+        android:id="@+id/answerRequest"
+        android:name="bma.amine.clinica.AnswerRequest"
+        android:label="fragment_answer_request"
+        tools:layout="@layout/fragment_answer_request" >
+        <action
+            android:id="@+id/action_answerRequest_to_homeDoctor"
+            app:destination="@id/homeDoctor" />
     </fragment>
 </navigation>

@@ -2,9 +2,9 @@ package bma.amine.clinica
 
 data class Doctor(
     val _id: String?,
-    val nom: String,
-    val prenom: String,
-    val specialite: String,
-    val numero: String,
-    val photo: String?
+    val firstName: String,
+    val lastName: String,
+    val speciality: String,
+    val phoneNumber: String,
+    val picture: String?
 )

@@ -1,6 +1,6 @@
 package bma.amine.clinica
 
-data class Reponse(
+data class Answer(
     val id:String,
-    val reponse:String
+    val answer:String
 )

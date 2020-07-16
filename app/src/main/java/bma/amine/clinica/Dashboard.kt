@@ -1,20 +1,16 @@
 package bma.amine.clinica
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Color.green
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,7 +40,8 @@ class Dashboard : Fragment() {
             )
         call.enqueue(object: Callback<List<Request>> {
             override fun onFailure(call: Call<List<Request>>, t: Throwable) {
-                Toast.makeText(context, "Une erreur s'est produite", Toast.LENGTH_SHORT)
+                Snackbar.make(requireView(), "Une erreur s'est produite.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("D'accord"){}
                     .show()
             }
 
@@ -60,10 +57,10 @@ class Dashboard : Fragment() {
                         }
 
                         val requestsNumber = ArrayList<PieEntry>()
-                        requestsNumber.add(PieEntry(todayRequests.size.toFloat(), "Aujourd'hui"))
-                        requestsNumber.add(PieEntry(yesterdayRequests.size.toFloat(), "Hier"))
+                        requestsNumber.add(PieEntry(todayRequests.size.toFloat(), "En cours"))
+                        requestsNumber.add(PieEntry(answeredRequests.size.toFloat(), "Traitées"))
 
-                        val pieDataSet = PieDataSet(requestsNumber, "           Nombre de demandes de diagnostique")
+                        val pieDataSet = PieDataSet(requestsNumber, "           Nombre de demandes de diagnostique du jour")
                         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS.toList())
 
                         val pieData = PieData(pieDataSet)
@@ -75,15 +72,13 @@ class Dashboard : Fragment() {
                         requestsChart.setEntryLabelTextSize(10f)
                         requestsChart.animateXY(500,500)
 
-                        answered.text = "Nombre de demandes de diagnostique traitées:\n${answeredRequests.size}"
                         if(todayRequests.size!=0)
                             evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n${(todayRequests.size-yesterdayRequests.size)*100/todayRequests.size}"
                         else
                             evolution.text = "Taux d'évolution du nombre de demandes de diagnostique:\n-100%"
                     }
                     else{
-                        evolution.text = ""
-                        answered.text = "Vous n'avez reçu aucune demande de diagnostique"
+                        evolution.text = "Vous n'avez reçu aucune demande de diagnostique"
                     }
 
                 }

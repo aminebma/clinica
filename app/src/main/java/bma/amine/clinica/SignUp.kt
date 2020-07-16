@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_login.topAppBar
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import retrofit2.Call
@@ -53,7 +52,8 @@ class SignUp : Fragment() {
             val call = RetrofitService.endpoint.signUp(patient)
             call.enqueue(object: Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(context, "Une erreur s'est produite", Toast.LENGTH_SHORT)
+                    Snackbar.make(requireView(), "Une erreur s'est produite.", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("D'accord"){}
                         .show()
                 }
 

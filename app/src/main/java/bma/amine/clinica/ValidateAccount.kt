@@ -8,11 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_validate_account.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +44,8 @@ class ValidateAccount : Fragment() {
             val call = RetrofitService.endpoint.validateAccount(compte)
             call.enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(context, "Une erreur s'est produite", Toast.LENGTH_SHORT)
+                    Snackbar.make(requireView(), "Une erreur s'est produite.", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("D'accord"){}
                         .show()
                 }
 
