@@ -10,7 +10,7 @@ interface Endpoint {
     @GET("/api/doctors/")
     fun getDoctors(): Call<ArrayList<Doctor>>
 
-    @GET("/{id}")
+    @GET("/api/requests/{id}")
     fun getRequests(@Path("id") id:String): Call<List<Request>>
 
     @GET("/api/requests/{id}/all")
@@ -18,14 +18,14 @@ interface Endpoint {
 
     @Multipart
     @POST("/api/requests/new")
-    fun ajouterConseil(@Part image: MultipartBody.Part,
-                       @Part("Idp") Idp:RequestBody,
-                       @Part("Idm") Idm:RequestBody,
-                       @Part("nomPatient") nomPatient:RequestBody,
-                       @Part("prenomPatient") prenomPatient:RequestBody,
-                       @Part("date") date:RequestBody,
-                       @Part("symptomes") symptomes:Array<RequestBody>,
-                       @Part("traitements") traitements:RequestBody): Call<String>
+    fun newRequest(@Part picture: MultipartBody.Part,
+                   @Part("date") date:RequestBody,
+                   @Part("patientId") patientId:RequestBody,
+                   @Part("doctorId") doctorId:RequestBody,
+                   @Part("patientFirstName") patientFirstName:RequestBody,
+                   @Part("patientLastName") patientLastName:RequestBody,
+                   @Part("symptoms") symptoms:ArrayList<RequestBody>,
+                   @Part("treatments") treatments:RequestBody): Call<String>
 
     @POST("/api/requests/response")
     fun answerRequest(@Body answer: Answer): Call<String>

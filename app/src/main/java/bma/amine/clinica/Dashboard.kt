@@ -55,9 +55,10 @@ class Dashboard : Fragment() {
                             it.date.subSequence(0,10) == SimpleDateFormat("yyyy-MM-dd").format(Date())
                                     && it.status=="answered"
                         }
+                        val unansweredRequests = requests!!.subtract(answeredRequests)
 
                         val requestsNumber = ArrayList<PieEntry>()
-                        requestsNumber.add(PieEntry(todayRequests.size.toFloat(), "En cours"))
+                        requestsNumber.add(PieEntry(unansweredRequests.size.toFloat(), "En cours"))
                         requestsNumber.add(PieEntry(answeredRequests.size.toFloat(), "Traitées"))
 
                         val pieDataSet = PieDataSet(requestsNumber, "           Nombre de demandes de diagnostique du jour")
@@ -69,6 +70,8 @@ class Dashboard : Fragment() {
                         requestsChart.data = pieData
 
                         requestsChart.description.isEnabled = false
+                        requestsChart.centerText = "Total:\n${todayRequests.size}"
+                        requestsChart.setCenterTextSize(12f)
                         requestsChart.setEntryLabelTextSize(10f)
                         requestsChart.animateXY(500,500)
 

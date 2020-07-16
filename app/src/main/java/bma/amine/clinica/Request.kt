@@ -5,10 +5,10 @@ data class Request(
     val date: String,
     val patientId: String,
     val doctorId: String,
-    val firstName: String?,
-    val lastName: String?,
+    val patientFirstName: String?,
+    val patientLastName: String?,
     val symptoms: Array<String>,
-    val treatements: String?,
+    val treatments: String?,
     val picture: String?,
     val status: String?
 )

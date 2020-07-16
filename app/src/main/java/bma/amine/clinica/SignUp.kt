@@ -35,7 +35,7 @@ class SignUp : Fragment() {
         logoAnimator.duration = 1500
         logoAnimator.start()
 
-        topAppBar.setNavigationOnClickListener {
+        signUpTopAppBar.setNavigationOnClickListener {
             requireActivity().findNavController(R.id.navhost).navigate(R.id.action_signUp_to_login)
         }
 

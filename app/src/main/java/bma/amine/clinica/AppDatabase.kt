@@ -7,5 +7,5 @@ import androidx.room.TypeConverters
 @Database(entities = arrayOf(RequestTmp::class), version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
-
+    abstract fun getRequestDAO():RequestDAO
 }

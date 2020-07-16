@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -20,7 +22,7 @@ class DoctorAdapter (var context: Context, var data:ArrayList<Doctor>): Recycler
 
     override fun onBindViewHolder(holder: DoctorViewHolder, position: Int) {
         if(data[position].picture != null)
-            Glide.with(context).load("http://192.168.43.191:3000/images/${data[position].picture}")
+            Glide.with(context).load("${ServerUrl.url}/images/${data[position].picture}")
                 .timeout(Int.MAX_VALUE)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(holder.picture)
@@ -30,7 +32,15 @@ class DoctorAdapter (var context: Context, var data:ArrayList<Doctor>): Recycler
         holder.speciality.text = "${data[position].speciality}"
         holder.phoneNumber.text = "${data[position].phoneNumber}"
         holder.askBtn.setOnClickListener { view ->
-
+            val bundle = bundleOf(
+                "doctorId" to data[position]._id,
+                "firstName" to data[position].firstName,
+                "lastName" to data[position].lastName,
+                "doctorPicture" to data[position].picture,
+                "speciality" to data[position].speciality,
+                "phoneNumber" to data[position].phoneNumber
+            )
+            view.findNavController().navigate(R.id.action_homePatient_to_newRequest, bundle)
         }
     }
 

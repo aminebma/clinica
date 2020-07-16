@@ -79,6 +79,7 @@
         android:layout_width="251dp"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
+        android:nextFocusDown="@+id/password"
         app:boxBackgroundColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/loginTitle"
         app:layout_constraintStart_toStartOf="@+id/loginTitle"

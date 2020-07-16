@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_homePatient_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_homePatient_to_newRequest"
+            app:destination="@id/newRequest" />
     </fragment>
     <fragment
         android:id="@+id/homeDoctor"
@@ -60,6 +63,15 @@
         <action
             android:id="@+id/action_homeDoctor_to_answerRequest"
             app:destination="@id/answerRequest" />
+    </fragment>
+    <fragment
+        android:id="@+id/newRequest"
+        android:name="bma.amine.clinica.NewRequest"
+        android:label="fragment_new_request"
+        tools:layout="@layout/fragment_new_request" >
+        <action
+            android:id="@+id/action_newRequest_to_homePatient"
+            app:destination="@id/homePatient" />
     </fragment>
     <fragment
         android:id="@+id/answerRequest"
