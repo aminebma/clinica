@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -77,7 +80,27 @@ class Login extends StatelessWidget {
                     height: 36,
                     width: 120,
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        var url =
+                            'http://899759e0d2bb.ngrok.io/api/accounts/sign-in';
+                        var response = await post(url, body: {
+                          'phoneNumber': '+213696709244',
+                          'password': '1234'
+                        });
+                        Map user = jsonDecode(response.body);
+                        if (user["type"] == 0)
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/home-patient',
+                            arguments: user,
+                          );
+                        else
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/home-doctor',
+                            arguments: user,
+                          );
+                      },
                       child: Text(
                         'Se connecter',
                         style: TextStyle(
