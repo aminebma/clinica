@@ -22,6 +22,12 @@ class _HomeDoctorState extends State<HomeDoctor> {
           ),
         ),
       ),
+      body: FloatingActionButton(
+        child: Icon(Icons.exit_to_app),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/');
+        },
+      ),
     );
   }
 }
