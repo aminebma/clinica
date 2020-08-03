@@ -13,11 +13,17 @@ const jwt = require('jsonwebtoken')
 router.post('/sign-up', async (req, res) => {
 
     const {error} = validateAccount(req.body)
-    if(error) return res.status(400).send(error)
+    if(error) {
+        console.error(error)
+        return res.status(400).send(error)
+    }
 
     let patient = await Patient.findOne({phoneNumber: req.body.phoneNumber})
     if(patient) {
-        if(patient._doc.status === 'approved') return res.status(400).send("Utilisateur déjà inscrit.")
+        if(patient._doc.status === 'approved') {
+            console.error("Utilisateur déjà inscrit")
+            return res.status(400).send("Utilisateur déjà inscrit.")
+        }
         else {
             await client.verify.services.create({friendlyName: 'Clinica', codeLength: 4})
                 .then(async service => {
@@ -130,8 +136,8 @@ router.post('/sign-in', async(req, res)=>{
 
                 delete patient._doc.password
                 const token = jwt.sign({_id: patient._doc._id}, config.get('auth.jwtPK'))
-                patient.jwt = token
-                patient.type = 0
+                patient._doc.jwt = token
+                patient._doc.type = 0
                 res.send(patient)
             }
         })
