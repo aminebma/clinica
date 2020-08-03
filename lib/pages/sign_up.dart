@@ -26,7 +26,6 @@ class SignUp extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
             ),
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Prénom',
               labelStyle: TextStyle(
@@ -66,7 +65,6 @@ class SignUp extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
             ),
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Nom',
               labelStyle: TextStyle(
@@ -106,7 +104,6 @@ class SignUp extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
             ),
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Adresse',
               labelStyle: TextStyle(
@@ -146,7 +143,7 @@ class SignUp extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
             ),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: 'Mail',
               labelStyle: TextStyle(
@@ -192,7 +189,7 @@ class SignUp extends StatelessWidget {
               labelStyle: TextStyle(
                 color: Colors.blue,
               ),
-              prefixText: '213',
+              prefixText: '+213',
               prefixStyle: TextStyle(
                 color: Colors.black,
                 fontSize: 20,
@@ -284,19 +281,27 @@ class SignUp extends StatelessWidget {
   void _submit() async {
     if (_signUpFormKey.currentState.validate()) {
       _signUpFormKey.currentState.save();
-      var url = 'http://192.168.1.7:3000/api/accounts/sign-up';
+      var url = 'http://192.168.43.191:3000/api/accounts/sign-up';
+      Map user = {
+        'firstName': _firstName,
+        'lastName': _lastName,
+        'address': _address,
+        'mail': _mail,
+        'phoneNumber': '+213$_phoneNumber',
+      };
       var response = await post(
         url,
-        body: {
-          'firstName': _firstName,
-          'lastName': _lastName,
-          'address': _address,
-          'mail': _mail,
-          'phoneNumber': '+213$_phoneNumber',
-        },
+        body: user,
       );
       var sid = response.body;
-      Navigator.pushNamed(_context, '/sign_up/verify', arguments: sid);
+      Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
+        'sid': sid,
+        'firstName': user['firstName'],
+        'lastName': user['lastName'],
+        'address': user['address'],
+        'mail': user['mail'],
+        'phoneNumber': user['phoneNumber'],
+      });
     }
   }
 }

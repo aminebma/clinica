@@ -11,6 +11,7 @@ class _HomePatientState extends State<HomePatient> {
   @override
   Widget build(BuildContext context) {
     user = ModalRoute.of(context).settings.arguments;
+    print(user);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
