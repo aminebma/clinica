@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:clinica/pages/login.dart';
 import 'package:clinica/pages/sign_up.dart';
+import 'package:clinica/pages/confirmSignUp.dart';
 import 'package:clinica/pages/home_patient.dart';
 import 'package:clinica/pages/home_doctor.dart';
 
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Login(),
         '/sign_up': (context) => SignUp(),
+        '/sign_up/verify': (context) => ConfirmSignUp(),
         '/home-patient': (context) => HomePatient(),
         '/home-doctor': (context) => HomeDoctor(),
       },
