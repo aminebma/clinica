@@ -15,14 +15,14 @@ class _HomeDoctorState extends State<HomeDoctor> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Clinica',
+          'Clinica - Doctor',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'Lobster',
           ),
         ),
       ),
-      body: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         child: Icon(Icons.exit_to_app),
         onPressed: () {
           Navigator.pushReplacementNamed(context, '/');

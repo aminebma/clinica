@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+// ignore: must_be_immutable
 class Login extends StatelessWidget {
-  final phoneNumberController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+  String _phoneNumber, _password;
+  BuildContext _context;
 
   Widget _entryField(String title, {bool isPassword = false}) {
     if (isPassword) {
@@ -16,25 +18,32 @@ class Login extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            TextField(
+            TextFormField(
               style: TextStyle(
                 fontSize: 20,
               ),
               keyboardType: TextInputType.number,
               obscureText: isPassword,
               decoration: InputDecoration(
-                  labelText: 'Mot de passe',
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.blue,
-                  ),
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true),
-              controller: passwordController,
+                labelText: 'Mot de passe',
+                labelStyle: TextStyle(
+                  color: Colors.blue,
+                ),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.blue,
+                ),
+                border: InputBorder.none,
+                fillColor: Color(0xfff3f3f4),
+                filled: true,
+              ),
+              validator: (value) {
+                if (value.isEmpty)
+                  return 'Veuillez remplir ce champs';
+                else
+                  return null;
+              },
+              onSaved: (value) => _password = value,
             )
           ],
         ),
@@ -48,30 +57,37 @@ class Login extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            TextField(
+            TextFormField(
               style: TextStyle(
                 fontSize: 20,
               ),
               keyboardType: TextInputType.phone,
               obscureText: isPassword,
               decoration: InputDecoration(
-                  labelText: 'Numéro de téléphone',
-                  labelStyle: TextStyle(
-                    color: Colors.blue,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.phone,
-                    color: Colors.blue,
-                  ),
-                  prefixText: '+213',
-                  prefixStyle: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true),
-              controller: phoneNumberController,
+                labelText: 'Numéro de téléphone',
+                labelStyle: TextStyle(
+                  color: Colors.blue,
+                ),
+                prefixIcon: Icon(
+                  Icons.phone,
+                  color: Colors.blue,
+                ),
+                prefixText: '+213',
+                prefixStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+                border: InputBorder.none,
+                fillColor: Color(0xfff3f3f4),
+                filled: true,
+              ),
+              validator: (value) {
+                if (value.isEmpty)
+                  return 'Veuillez remplir ce champs';
+                else
+                  return null;
+              },
+              onSaved: (value) => _phoneNumber = value,
             )
           ],
         ),
@@ -80,16 +96,20 @@ class Login extends StatelessWidget {
   }
 
   Widget _phonePasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Numéro de téléphone"),
-        _entryField("Mot de passe", isPassword: true),
-      ],
+    return Form(
+      key: _loginFormKey,
+      child: Column(
+        children: <Widget>[
+          _entryField("Numéro de téléphone"),
+          _entryField("Mot de passe", isPassword: true),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -152,31 +172,7 @@ class Login extends StatelessWidget {
                       height: 36,
                       width: 120,
                       child: RaisedButton(
-                        onPressed: () async {
-                          var url =
-                              'http://192.168.1.7:3000/api/accounts/sign-in';
-                          var response = await post(
-                            url,
-                            body: {
-                              'phoneNumber':
-                                  '+213${phoneNumberController.text}',
-                              'password': passwordController.text,
-                            },
-                          );
-                          Map user = jsonDecode(response.body);
-                          if (user["type"] == 0)
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/home-patient',
-                              arguments: user,
-                            );
-                          else
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/home-doctor',
-                              arguments: user,
-                            );
-                        },
+                        onPressed: _submit,
                         child: Text(
                           'Se connecter',
                           style: TextStyle(
@@ -194,5 +190,32 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _submit() async {
+    if (_loginFormKey.currentState.validate()) {
+      _loginFormKey.currentState.save();
+      var url = 'http://192.168.1.7:3000/api/accounts/sign-in';
+      var response = await post(
+        url,
+        body: {
+          'phoneNumber': '+213$_phoneNumber',
+          'password': _password,
+        },
+      );
+      Map user = jsonDecode(response.body);
+      if (user["type"] == 0)
+        Navigator.pushReplacementNamed(
+          _context,
+          '/home-patient',
+          arguments: user,
+        );
+      else
+        Navigator.pushReplacementNamed(
+          _context,
+          '/home-doctor',
+          arguments: user,
+        );
+    }
   }
 }

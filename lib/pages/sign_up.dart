@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'dart:convert';
 
+// ignore: must_be_immutable
 class SignUp extends StatelessWidget {
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final addressController = TextEditingController();
-  final mailController = TextEditingController();
-  final phoneController = TextEditingController();
+  String _firstName, _lastName, _address, _mail, _phoneNumber;
   final _signUpFormKey = GlobalKey<FormState>();
+  BuildContext _context;
 
   Widget _firstNameField() {
     return Container(
@@ -43,7 +40,7 @@ class SignUp extends StatelessWidget {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
-            controller: firstNameController,
+            onSaved: (value) => _firstName = value,
           )
         ],
       ),
@@ -83,7 +80,7 @@ class SignUp extends StatelessWidget {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
-            controller: lastNameController,
+            onSaved: (value) => _lastName = value,
           )
         ],
       ),
@@ -123,7 +120,7 @@ class SignUp extends StatelessWidget {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
-            controller: addressController,
+            onSaved: (value) => _address = value,
           )
         ],
       ),
@@ -163,7 +160,7 @@ class SignUp extends StatelessWidget {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
-            controller: mailController,
+            onSaved: (value) => _mail = value,
           )
         ],
       ),
@@ -208,7 +205,7 @@ class SignUp extends StatelessWidget {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
-            controller: phoneController,
+            onSaved: (value) => _phoneNumber = value,
           )
         ],
       ),
@@ -232,6 +229,7 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -278,24 +276,27 @@ class SignUp extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: () async {
-          if (_signUpFormKey.currentState.validate()) {
-            var url = 'http://192.168.1.7:3000/api/accounts/sign-up';
-            var response = await post(
-              url,
-              body: {
-                'firstName': firstNameController.text,
-                'lastName': lastNameController.text,
-                'address': addressController.text,
-                'mail': mailController.text,
-                'phoneNumber': '+213${phoneController.text}',
-              },
-            );
-            var sid = response.body;
-            Navigator.pushNamed(context, '/sign_up/verify', arguments: sid);
-          }
-        },
+        onPressed: _submit,
       ),
     );
+  }
+
+  void _submit() async {
+    if (_signUpFormKey.currentState.validate()) {
+      _signUpFormKey.currentState.save();
+      var url = 'http://192.168.1.7:3000/api/accounts/sign-up';
+      var response = await post(
+        url,
+        body: {
+          'firstName': _firstName,
+          'lastName': _lastName,
+          'address': _address,
+          'mail': _mail,
+          'phoneNumber': '+213$_phoneNumber',
+        },
+      );
+      var sid = response.body;
+      Navigator.pushNamed(_context, '/sign_up/verify', arguments: sid);
+    }
   }
 }
