@@ -188,6 +188,7 @@ class SignUp extends StatelessWidget {
               labelText: 'Numéro de téléphone',
               labelStyle: TextStyle(
                 color: Colors.blue,
+                fontSize: 19,
               ),
               prefixText: '+213',
               prefixStyle: TextStyle(
@@ -195,7 +196,7 @@ class SignUp extends StatelessWidget {
                 fontSize: 20,
               ),
               prefixIcon: Icon(
-                Icons.lock,
+                Icons.phone,
                 color: Colors.blue,
               ),
               border: InputBorder.none,
@@ -281,7 +282,7 @@ class SignUp extends StatelessWidget {
   void _submit() async {
     if (_signUpFormKey.currentState.validate()) {
       _signUpFormKey.currentState.save();
-      var url = 'http://192.168.43.191:3000/api/accounts/sign-up';
+      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
       Map user = {
         'firstName': _firstName,
         'lastName': _lastName,

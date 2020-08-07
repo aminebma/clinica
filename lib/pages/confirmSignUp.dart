@@ -232,7 +232,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   void _validateAccount() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      var url = 'http://192.168.43.191:3000/api/accounts/sign-up/verify';
+      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up/verify';
       var response = await post(
         url,
         body: {

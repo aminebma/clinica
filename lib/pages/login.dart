@@ -59,7 +59,7 @@ class Login extends StatelessWidget {
             ),
             TextFormField(
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 19,
               ),
               keyboardType: TextInputType.phone,
               obscureText: isPassword,
@@ -195,7 +195,7 @@ class Login extends StatelessWidget {
   void _submit() async {
     if (_loginFormKey.currentState.validate()) {
       _loginFormKey.currentState.save();
-      var url = 'http://192.168.43.191:3000/api/accounts/sign-in';
+      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-in';
       var response = await post(
         url,
         body: {
