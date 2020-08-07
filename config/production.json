@@ -1,8 +1,6 @@
 {
   "name": "Clinica - Production",
   "database": {
-    "name": "db-clinica",
-    "ip": "localhost",
-    "port": "27017"
+    "name": "db-clinica"
   }
 }
