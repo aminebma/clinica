@@ -34,11 +34,11 @@ mongoose.connection.once('open',function(){
 
 //Environment Port and Ip
 const port = config.get("server.port")
-const ip = "192.168.43.191"
-// config.get("server.ip")
+// const ip = "192.168.43.191"
+// // config.get("server.ip")
 
 //Starting the server
-app.listen(port, ip, () => console.log(`Listening on ${ip}:${port}`))
+app.listen(port, () => console.log(`Listening on port ${port}`))
 
 
 
