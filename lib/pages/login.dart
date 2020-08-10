@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-// ignore: must_be_immutable
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final _loginFormKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isConnecting = false;
   String _phoneNumber, _password;
+
   BuildContext _context;
 
   Widget _entryField(String title, {bool isPassword = false}) {
@@ -110,7 +117,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _context = context;
+
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -126,6 +135,12 @@ class Login extends StatelessWidget {
           child: Center(
             child: Column(
               children: <Widget>[
+                Visibility(
+                  visible: isConnecting,
+                  child: LinearProgressIndicator(
+                    value: null,
+                  ),
+                ),
                 Image.asset(
                   "assets/logo.png",
                   width: 300,
@@ -192,8 +207,11 @@ class Login extends StatelessWidget {
     );
   }
 
-  void _submit() async {
+  _submit() async {
     if (_loginFormKey.currentState.validate()) {
+      setState(() {
+        isConnecting = true;
+      });
       _loginFormKey.currentState.save();
       var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-in';
       var response = await post(
@@ -203,19 +221,29 @@ class Login extends StatelessWidget {
           'password': _password,
         },
       );
-      Map user = jsonDecode(response.body);
-      if (user["type"] == 0)
-        Navigator.pushReplacementNamed(
-          _context,
-          '/home-patient',
-          arguments: user,
+      if (response.statusCode == 200) {
+        Map user = jsonDecode(response.body);
+        if (user["type"] == 0)
+          Navigator.pushReplacementNamed(
+            _context,
+            '/home-patient',
+            arguments: user,
+          );
+        else
+          Navigator.pushReplacementNamed(
+            _context,
+            '/home-doctor',
+            arguments: user,
+          );
+      } else {
+        setState(() {
+          isConnecting = false;
+        });
+        SnackBar snackBar = SnackBar(
+          content: Text('Nom d\'utilisateur ou mot de passe incorrect.'),
         );
-      else
-        Navigator.pushReplacementNamed(
-          _context,
-          '/home-doctor',
-          arguments: user,
-        );
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
     }
   }
 }
