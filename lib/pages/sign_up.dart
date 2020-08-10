@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 // ignore: must_be_immutable
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   String _firstName, _lastName, _address, _mail, _phoneNumber;
+
+  bool isLoading = false;
+
   final _signUpFormKey = GlobalKey<FormState>();
+
   BuildContext _context;
 
   Widget _firstNameField() {
@@ -246,6 +255,12 @@ class SignUp extends StatelessWidget {
               Center(
                 child: Column(
                   children: <Widget>[
+                    Visibility(
+                      visible: isLoading,
+                      child: LinearProgressIndicator(
+                        value: null,
+                      ),
+                    ),
                     Image.asset(
                       "assets/logo.png",
                       width: 100,
@@ -281,6 +296,9 @@ class SignUp extends StatelessWidget {
 
   void _submit() async {
     if (_signUpFormKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       _signUpFormKey.currentState.save();
       var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
       Map user = {

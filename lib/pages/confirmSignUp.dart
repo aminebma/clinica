@@ -49,6 +49,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -81,6 +82,12 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
           width: MediaQuery.of(context).size.width,
           child: ListView(
             children: <Widget>[
+              Visibility(
+                visible: isLoading,
+                child: LinearProgressIndicator(
+                  value: null,
+                ),
+              ),
               SizedBox(height: 30),
               SizedBox(height: 8),
               Padding(
@@ -231,6 +238,9 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
 
   void _validateAccount() async {
     if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       formKey.currentState.save();
       var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up/verify';
       var response = await post(
@@ -258,6 +268,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
           .add(ErrorAnimationType.shake); // Triggering error shake animation
       setState(() {
         hasError = true;
+        isLoading = false;
       });
     }
   }
