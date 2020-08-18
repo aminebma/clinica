@@ -33,7 +33,7 @@ class AnswerRequest : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(arguments?.getString("requestPicture", "") != "")
+        if(arguments?.getString("requestPicture", "") != " ")
             Glide.with(requireActivity()).load("${ServerUrl.url}/images/${arguments?.getString("requestPicture")}")
                 .timeout(Int.MAX_VALUE)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

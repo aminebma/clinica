@@ -21,7 +21,7 @@ class DoctorAdapter (var context: Context, var data:ArrayList<Doctor>): Recycler
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: DoctorViewHolder, position: Int) {
-        if(data[position].picture != null)
+        if(data[position].picture != "")
             Glide.with(context).load("${ServerUrl.url}/images/${data[position].picture}")
                 .timeout(Int.MAX_VALUE)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

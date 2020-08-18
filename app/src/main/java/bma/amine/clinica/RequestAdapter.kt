@@ -23,7 +23,7 @@ class RequestAdapter (var context: Context, var data:List<Request>): RecyclerVie
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
-        if(data[position].picture != null)
+        if(data[position].picture!!.length > 23)
             Glide.with(context).load("${ServerUrl.url}/images/${data[position].picture}")
                 .timeout(Int.MAX_VALUE)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

@@ -50,7 +50,7 @@ class NewRequest : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(arguments?.getString("doctorPicture", "") != "")
+        if(arguments?.getString("doctorPicture", "") != " ")
             Glide.with(requireActivity()).load("${ServerUrl.url}/images/${arguments?.getString("doctorPicture")}")
                 .timeout(Int.MAX_VALUE)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
