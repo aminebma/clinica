@@ -99,7 +99,7 @@ class _HomePatientState extends State<HomePatient> {
       body: ListView(
         children: [
           Container(
-            margin: EdgeInsets.fromLTRB(50, 30, 50, 0),
+            margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
             height: MediaQuery.of(context).size.height - 200,
             child: FutureBuilder(
               future: loadDoctorsData(),

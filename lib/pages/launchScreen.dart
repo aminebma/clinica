@@ -22,6 +22,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
           Navigator.pushReplacementNamed(context, '/home-doctor');
           break;
         default:
+          Navigator.pushReplacementNamed(context, '/login');
           break;
       }
     });
