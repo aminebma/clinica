@@ -43,7 +43,7 @@ router.post('/sign-up', async (req, res) => {
                 }).catch(err => res.send(err))
         }
     } else{
-        patient = new Patient(_.pick(req.body, ['firstName','lastName','address','phoneNumber','mail']))
+        patient = new Patient(_.pick(req.body, ['firstName','lastName', 'sex', 'address','phoneNumber','mail']))
 
         await client.verify.services.create({friendlyName: 'Clinica', codeLength: 4})
             .then(async service => {
@@ -152,6 +152,7 @@ function validateAccount(patient){
     const schema = Joi.object({
         firstName: Joi.string().min(3).max(35).required(),
         lastName: Joi.string().min(3).max(20).required(),
+        sex: Joi.boolean().required,
         address: Joi.string().min(5).max(200).required(),
         phoneNumber: Joi.string().min(9).max(14).required(),
         mail: Joi.string().min(5).max(100).required().email()
