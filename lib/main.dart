@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:clinica/pages/launchScreen.dart';
 import 'package:clinica/pages/login.dart';
 import 'package:clinica/pages/sign_up.dart';
 import 'package:clinica/pages/confirmSignUp.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Login(),
+        '/': (context) => LaunchScreen(),
+        '/login': (context) => Login(),
         '/sign_up': (context) => SignUp(),
         '/sign_up/verify': (context) => ConfirmSignUp(),
         '/home-patient': (context) => HomePatient(),

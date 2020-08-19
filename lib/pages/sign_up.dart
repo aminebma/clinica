@@ -7,9 +7,11 @@ class SignUp extends StatefulWidget {
   _SignUpState createState() => _SignUpState();
 }
 
+enum Sexe { Homme, Femme }
+
 class _SignUpState extends State<SignUp> {
   String _firstName, _lastName, _address, _mail, _phoneNumber;
-
+  Sexe _sex = Sexe.Homme;
   bool isLoading = false;
 
   final _signUpFormKey = GlobalKey<FormState>();
@@ -219,6 +221,79 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  Widget _sexField() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.accessibility,
+                color: Colors.blue,
+                size: 30,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Sexe',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          ListTile(
+            title: const Text(
+              'Homme',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.blue,
+              ),
+            ),
+            leading: Radio(
+              value: Sexe.Homme,
+              groupValue: _sex,
+              onChanged: (Sexe value) {
+                setState(() {
+                  _sex = value;
+                });
+              },
+            ),
+          ),
+          ListTile(
+            title: const Text(
+              'Femme',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.blue,
+              ),
+            ),
+            leading: Radio(
+              value: Sexe.Femme,
+              groupValue: _sex,
+              onChanged: (Sexe value) {
+                setState(() {
+                  _sex = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _signUpForm() {
     return Form(
       key: _signUpFormKey,
@@ -226,6 +301,7 @@ class _SignUpState extends State<SignUp> {
         children: <Widget>[
           _lastNameField(),
           _firstNameField(),
+          _sexField(),
           _addressField(),
           _mailField(),
           _phoneField()
@@ -304,6 +380,7 @@ class _SignUpState extends State<SignUp> {
       Map user = {
         'firstName': _firstName,
         'lastName': _lastName,
+        'sex': _sex == Sexe.Homme ? 'h' : 'f',
         'address': _address,
         'mail': _mail,
         'phoneNumber': '+213$_phoneNumber',
@@ -312,15 +389,19 @@ class _SignUpState extends State<SignUp> {
         url,
         body: user,
       );
-      var sid = response.body;
-      Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
-        'sid': sid,
-        'firstName': user['firstName'],
-        'lastName': user['lastName'],
-        'address': user['address'],
-        'mail': user['mail'],
-        'phoneNumber': user['phoneNumber'],
-      });
+      if (response.statusCode == 200) {
+        var sid = response.body;
+        Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
+          'sid': sid,
+          'firstName': user['firstName'],
+          'lastName': user['lastName'],
+          'sex': user['sex'],
+          'address': user['address'],
+          'mail': user['mail'],
+          'phoneNumber': user['phoneNumber'],
+        });
+      } else
+        print(response.body);
     }
   }
 }

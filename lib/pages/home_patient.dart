@@ -2,6 +2,7 @@ import 'package:clinica/models/doctor.dart';
 import 'package:clinica/services/doctors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePatient extends StatefulWidget {
   @override
@@ -9,7 +10,8 @@ class HomePatient extends StatefulWidget {
 }
 
 class _HomePatientState extends State<HomePatient> {
-  Map user = {};
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Map _user = {};
   int _selectedIndex = 0;
 
   Future<List<Doctor>> loadDoctorsData() async {
@@ -20,6 +22,22 @@ class _HomePatientState extends State<HomePatient> {
     return listOfDoctors;
   }
 
+  void loadUserData() async {
+    var userData = await _prefs.then((SharedPreferences prefs) {
+      return {
+        "firstName": prefs.getString('firstName'),
+        "lastName": prefs.getString('lastName'),
+        "sex": prefs.getString('sex'),
+        "phoneNumber": prefs.getString('phoneNumber'),
+        "mail": prefs.getString('mail'),
+        "address": prefs.getString('address')
+      };
+    });
+    setState(() {
+      _user = userData;
+    });
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -27,14 +45,18 @@ class _HomePatientState extends State<HomePatient> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    user = ModalRoute.of(context).settings.arguments;
-    print(user);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Clinica - Patient',
+          'Clinica',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'Lobster',
@@ -46,13 +68,13 @@ class _HomePatientState extends State<HomePatient> {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(
-                "${user['firstName'].toString().toUpperCase().substring(0, 1)}.${user['lastName']}",
+                "${_user['firstName'].toString().toUpperCase().substring(0, 1)}.${_user['lastName']}",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
               accountEmail: Text(
-                "${user['phoneNumber']}",
+                "${_user['phoneNumber']}",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -67,7 +89,8 @@ class _HomePatientState extends State<HomePatient> {
               leading: Icon(Icons.exit_to_app),
               title: Text('Se déconnecter'),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/');
+                _prefs.then((SharedPreferences prefs) => prefs.clear());
+                Navigator.pushReplacementNamed(context, '/login');
               },
             )
           ],
@@ -142,7 +165,7 @@ class _HomePatientState extends State<HomePatient> {
                                 ),
                               ),
                               onPressed: () {
-                                print('Aille !');
+                                print('Diagnostique envoyé !');
                               },
                               color: Colors.white,
                             ),
