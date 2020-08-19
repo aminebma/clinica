@@ -152,7 +152,7 @@ function validateAccount(patient){
     const schema = Joi.object({
         firstName: Joi.string().min(3).max(35).required(),
         lastName: Joi.string().min(3).max(20).required(),
-        sex: Joi.boolean().required,
+        sex: Joi.string().required,
         address: Joi.string().min(5).max(200).required(),
         phoneNumber: Joi.string().min(9).max(14).required(),
         mail: Joi.string().min(5).max(100).required().email()

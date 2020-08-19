@@ -19,7 +19,7 @@ const patientSchema = new Schema({
         required: true
     },
     sex:{
-      type: Boolean,
+      type: String,
       required: true
     },
     address: {
