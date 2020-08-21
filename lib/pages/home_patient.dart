@@ -1,8 +1,10 @@
-import 'package:clinica/models/doctor.dart';
-import 'package:clinica/services/doctors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:clinica/models/doctor.dart';
+import 'package:clinica/services/doctors.dart';
+import 'package:clinica/widgets/listFilter.dart';
 
 class HomePatient extends StatefulWidget {
   @override
@@ -13,6 +15,19 @@ class _HomePatientState extends State<HomePatient> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Map _user = {};
   int _selectedIndex = 0;
+  List<String> _criteria = [
+    'Cardiologue',
+    'Dentiste',
+    'Dermatologue',
+    'Gastrologue',
+    'Généraliste',
+    'Gynécologue',
+    'Pédiatre',
+    'Psychologue',
+    'Radiologue',
+    'Urologue'
+  ];
+  List<String> _filters = [];
 
   Future<List<Doctor>> loadDoctorsData() async {
     print('Loading data...');
@@ -98,9 +113,24 @@ class _HomePatientState extends State<HomePatient> {
       ),
       body: ListView(
         children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: 10,
+              left: 15,
+              bottom: 10,
+            ),
+            child: Text(
+              'Filtrer par spécialité',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ListFilter(_criteria),
           Container(
-            margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
-            height: MediaQuery.of(context).size.height - 200,
+            margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
+            height: MediaQuery.of(context).size.height - 250,
             child: FutureBuilder(
               future: loadDoctorsData(),
               builder: (BuildContext c, AsyncSnapshot snapshot) {
@@ -195,7 +225,7 @@ class _HomePatientState extends State<HomePatient> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assignment_turned_in),
-            title: Text("Diagnostics"),
+            title: Text("Diagnostiques"),
           ),
         ],
         currentIndex: _selectedIndex,

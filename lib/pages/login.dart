@@ -248,7 +248,8 @@ class _LoginState extends State<Login> {
             prefs.setBool('sex', user['sex']);
             prefs.setString('phoneNumber', user['phoneNumber']);
             prefs.setString('speciality', user['speciality']);
-            prefs.setString('picture', user['picture']);
+            prefs.setString('picture',
+                "https://clinicaapp.herokuapp.com/images/${user['picture']}");
             Navigator.pushReplacementNamed(
               _context,
               '/home-doctor',
