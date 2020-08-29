@@ -365,7 +365,7 @@ class _SignUpState extends State<SignUp> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: _submit,
+        onPressed: isLoading ? null : _submit,
       ),
     );
   }
