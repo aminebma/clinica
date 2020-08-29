@@ -175,9 +175,11 @@ class _LoginState extends State<Login> {
                       height: 36,
                       width: 120,
                       child: RaisedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/sign_up');
-                        },
+                        onPressed: isConnecting
+                            ? null
+                            : () {
+                                Navigator.pushNamed(context, '/sign_up');
+                              },
                         child: Text(
                           'S\'inscrire',
                           style: TextStyle(color: Colors.white),
@@ -189,7 +191,7 @@ class _LoginState extends State<Login> {
                       height: 36,
                       width: 120,
                       child: RaisedButton(
-                        onPressed: _submit,
+                        onPressed: isConnecting ? null : _submit,
                         child: Text(
                           'Se connecter',
                           style: TextStyle(

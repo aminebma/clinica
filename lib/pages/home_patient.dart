@@ -32,7 +32,9 @@ class _HomePatientState extends State<HomePatient> {
   Future<List<Doctor>> loadDoctorsData() async {
     print('Loading data...');
     Doctors instance = Doctors();
-    var listOfDoctors = await instance.getDoctors();
+    List<Doctor> listOfDoctors = await instance.getDoctors()
+      ..removeWhere((Doctor doctor) =>
+          (_filters.length != 0 && !_filters.contains(doctor.speciality)));
     print('Data loaded :D');
     return listOfDoctors;
   }
@@ -48,9 +50,7 @@ class _HomePatientState extends State<HomePatient> {
         "address": prefs.getString('address')
       };
     });
-    setState(() {
-      _user = userData;
-    });
+    _user = userData;
   }
 
   void _onItemTapped(int index) {
@@ -127,7 +127,13 @@ class _HomePatientState extends State<HomePatient> {
               ),
             ),
           ),
-          ListFilter(_criteria),
+          ListFilter(
+            _criteria,
+            _filters,
+            onFilter: () {
+              setState(() {});
+            },
+          ),
           Container(
             margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
             height: MediaQuery.of(context).size.height - 250,
@@ -195,7 +201,7 @@ class _HomePatientState extends State<HomePatient> {
                                 ),
                               ),
                               onPressed: () {
-                                print('Diagnostique envoyé !');
+                                print(_filters);
                               },
                               color: Colors.white,
                             ),
