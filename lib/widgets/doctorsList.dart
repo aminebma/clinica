@@ -72,6 +72,10 @@ class _DoctorsListState extends State<DoctorsList> {
                   itemBuilder: (BuildContext c, int index) {
                     return Card(
                       elevation: 7.0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.grey[400], width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       clipBehavior: Clip.antiAlias,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: Column(
@@ -80,9 +84,8 @@ class _DoctorsListState extends State<DoctorsList> {
                             "${snapshot.data[index].picture}",
                             scale: 1.0,
                             repeat: ImageRepeat.noRepeat,
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
+                            height: 250,
                           ),
                           Divider(
                             height: 10,
