@@ -60,4 +60,18 @@ class Accounts {
     } else
       return null;
   }
+
+  Future<dynamic> signUp(Map user) async {
+    var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
+    var response = await post(
+      url,
+      body: user,
+    );
+    if (response.statusCode == 200)
+      return response.body;
+    else {
+      print(response.body);
+      return null;
+    }
+  }
 }

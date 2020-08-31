@@ -224,13 +224,13 @@ class _LoginState extends State<Login> {
         else
           Navigator.pushReplacementNamed(_context, '/home-doctor');
       } else {
-        setState(() {
-          isConnecting = false;
-        });
         SnackBar snackBar = SnackBar(
           content: Text('Nom d\'utilisateur ou mot de passe incorrect.'),
         );
         _scaffoldKey.currentState.showSnackBar(snackBar);
+        setState(() {
+          isConnecting = false;
+        });
       }
     }
   }

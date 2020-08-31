@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
+import 'package:clinica/services/accounts.dart';
+
 // ignore: must_be_immutable
 class SignUp extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _SignUpState extends State<SignUp> {
   String _firstName, _lastName, _address, _mail, _phoneNumber;
   Sexe _sex = Sexe.Homme;
   bool isLoading = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _signUpFormKey = GlobalKey<FormState>();
 
@@ -314,6 +317,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     _context = context;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -376,7 +380,7 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
       _signUpFormKey.currentState.save();
-      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
+//      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
       Map user = {
         'firstName': _firstName,
         'lastName': _lastName,
@@ -385,12 +389,9 @@ class _SignUpState extends State<SignUp> {
         'mail': _mail,
         'phoneNumber': '+213$_phoneNumber',
       };
-      var response = await post(
-        url,
-        body: user,
-      );
-      if (response.statusCode == 200) {
-        var sid = response.body;
+      Accounts instance = Accounts();
+      var sid = await instance.signUp(user);
+      if (sid != null) {
         Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
           'sid': sid,
           'firstName': user['firstName'],
@@ -400,8 +401,32 @@ class _SignUpState extends State<SignUp> {
           'mail': user['mail'],
           'phoneNumber': user['phoneNumber'],
         });
-      } else
-        print(response.body);
+      } else {
+        SnackBar snackBar = SnackBar(
+          content: Text("Une erreur s'est produite."),
+        );
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+        setState(() {
+          isLoading = false;
+        });
+      }
+//      var response = await post(
+//        url,
+//        body: user,
+//      );
+//      if (response.statusCode == 200) {
+//        var sid = response.body;
+//        Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
+//          'sid': sid,
+//          'firstName': user['firstName'],
+//          'lastName': user['lastName'],
+//          'sex': user['sex'],
+//          'address': user['address'],
+//          'mail': user['mail'],
+//          'phoneNumber': user['phoneNumber'],
+//        });
+//      } else
+//        print(response.body);
     }
   }
 }
