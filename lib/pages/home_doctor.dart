@@ -27,7 +27,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
   }
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     loadUserData();
   }

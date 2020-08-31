@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+
+import 'package:clinica/services/accounts.dart';
+import 'package:clinica/models/patient.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,7 +9,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final _loginFormKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isConnecting = false;
@@ -217,48 +216,13 @@ class _LoginState extends State<Login> {
         isConnecting = true;
       });
       _loginFormKey.currentState.save();
-      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-in';
-      var response = await post(
-        url,
-        body: {
-          'phoneNumber': '+213$_phoneNumber',
-          'password': _password,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map user = jsonDecode(response.body);
-        if (user["type"] == 0) {
-          _prefs.then((SharedPreferences prefs) {
-            prefs.setInt('type', 0);
-            prefs.setString('firstName', user['firstName']);
-            prefs.setString('lastName', user['lastName']);
-            prefs.setString('sex', user['sex']);
-            prefs.setString('phoneNumber', user['phoneNumber']);
-            prefs.setString('mail', user['mail']);
-            prefs.setString('address', user['address']);
-            Navigator.pushReplacementNamed(
-              _context,
-              '/home-patient',
-              arguments: user,
-            );
-          });
-        } else {
-          _prefs.then((SharedPreferences prefs) {
-            prefs.setInt('type', 1);
-            prefs.setString('firstName', user['firstName']);
-            prefs.setString('lastName', user['lastName']);
-            prefs.setBool('sex', user['sex']);
-            prefs.setString('phoneNumber', user['phoneNumber']);
-            prefs.setString('speciality', user['speciality']);
-            prefs.setString('picture',
-                "https://clinicaapp.herokuapp.com/images/${user['picture']}");
-            Navigator.pushReplacementNamed(
-              _context,
-              '/home-doctor',
-              arguments: user,
-            );
-          });
-        }
+      Accounts instance = Accounts();
+      var user = await instance.connect(_phoneNumber, _password);
+      if (user != null) {
+        if (user is Patient)
+          Navigator.pushReplacementNamed(_context, '/home-patient');
+        else
+          Navigator.pushReplacementNamed(_context, '/home-doctor');
       } else {
         setState(() {
           isConnecting = false;

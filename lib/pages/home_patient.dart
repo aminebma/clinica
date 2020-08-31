@@ -28,7 +28,9 @@ class _HomePatientState extends State<HomePatient> {
         "address": prefs.getString('address')
       };
     });
-    _user = userData;
+    setState(() {
+      _user = userData;
+    });
   }
 
   void _onItemTapped(int index) {
