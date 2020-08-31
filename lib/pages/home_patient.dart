@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:clinica/widgets/doctorsList.dart';
+import 'package:clinica/widgets/requestsList.dart';
 
 class HomePatient extends StatefulWidget {
   @override
@@ -14,7 +15,9 @@ class _HomePatientState extends State<HomePatient> {
   int _selectedIndex = 0;
   List<Widget> _displayedPage = [
     DoctorsList(),
-    Text("Vous n'avez reçu aucun diagnostique."),
+    RequestsList(
+      isDoctor: false,
+    ),
   ];
 
   void loadUserData() async {

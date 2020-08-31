@@ -27,12 +27,12 @@ class _DoctorsListState extends State<DoctorsList> {
   List<String> _filters = [];
 
   Future<List<Doctor>> loadDoctorsData() async {
-    print('Loading data...');
+    print('Loading doctors data...');
     Doctors instance = Doctors();
     List<Doctor> listOfDoctors = await instance.getDoctors()
       ..removeWhere((Doctor doctor) =>
           (_filters.length != 0 && !_filters.contains(doctor.speciality)));
-    print('Data loaded :D');
+    print('Doctors data loaded :D');
     return listOfDoctors;
   }
 

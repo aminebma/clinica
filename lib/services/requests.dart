@@ -2,8 +2,13 @@ import 'package:clinica/models/crequest.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Requests {
-  Future<List<CRequest>> getRequests(bool isDoctor, String id) async {
+  Future<List<CRequest>> getRequests(bool isDoctor) async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var id =
+        await _prefs.then((SharedPreferences prefs) => prefs.getString('id'));
     List<CRequest> requestsData = [];
     var url = isDoctor
         ? 'https://clinicaapp.herokuapp.com/api/requests/$id'
@@ -12,12 +17,15 @@ class Requests {
     if (response.statusCode == 200) {
       var requests = jsonDecode(response.body);
       for (var request in requests) {
+        List<String> listOfSymptoms = [];
+        for (var symptom in request['symptoms']) listOfSymptoms.add(symptom);
         requestsData.add(CRequest(
             id: request['_id'],
             patientId: request['patientId'],
+            doctorId: request['doctorId'],
             patientFirstName: request['patientFirstName'],
             patientLastName: request['patientLastName'],
-            symptoms: request['symptoms'],
+            symptoms: listOfSymptoms,
             treatments: request['treatments'],
             picture:
                 "https://clinicaapp.herokuapp.com/images/${request['picture']}",
