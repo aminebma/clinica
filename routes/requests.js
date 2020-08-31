@@ -33,6 +33,11 @@ const imageUpload = multer({
 const Request = require('../models/request')
 
 
+router.get('/patient/:id', async (req, res)=>{
+    const requests = await Request.find({patientId: req.params.id})
+    res.send(requests)
+})
+
 //Get a doctor's pending requests
 router.get('/:id',async (req, res)=>{
     const requests = await Request.find({doctorId: req.params.id, status: 'pending'})
