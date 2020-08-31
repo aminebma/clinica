@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:http/http.dart';
+
+import 'package:clinica/services/accounts.dart';
 
 class ConfirmSignUp extends StatelessWidget {
   Map user = {};
@@ -242,34 +243,25 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         isLoading = true;
       });
       formKey.currentState.save();
-      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up/verify';
-      var response = await post(
-        url,
-        body: {
-          'phoneNumber': widget.user['phoneNumber'],
-          'code': currentText,
-          'sid': widget.user['sid'],
-        },
-      );
-      if (response.statusCode == 200) {
-        widget.user.putIfAbsent(response.body, () => 'id');
+      Accounts instance = Accounts();
+      Map user = await instance.confirmAccount(widget.user, currentText);
+      if (user != null) {
         setState(() {
           hasError = false;
           scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text("Compte créé avec succès !"),
             duration: Duration(seconds: 3),
           ));
-          Navigator.pushReplacementNamed(context, '/home-patient',
-              arguments: widget.user);
+          Navigator.pushReplacementNamed(context, '/home-patient');
+        });
+      } else {
+        errorController
+            .add(ErrorAnimationType.shake); // Triggering error shake animation
+        setState(() {
+          hasError = true;
+          isLoading = false;
         });
       }
-    } else {
-      errorController
-          .add(ErrorAnimationType.shake); // Triggering error shake animation
-      setState(() {
-        hasError = true;
-        isLoading = false;
-      });
     }
   }
 }

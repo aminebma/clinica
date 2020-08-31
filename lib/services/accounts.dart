@@ -21,6 +21,7 @@ class Accounts {
       if (user["type"] == 0) {
         _prefs.then((SharedPreferences prefs) {
           prefs.setInt('type', 0);
+          prefs.setString('id', user['_id']);
           prefs.setString('firstName', user['firstName']);
           prefs.setString('lastName', user['lastName']);
           prefs.setString('sex', user['sex']);
@@ -39,6 +40,7 @@ class Accounts {
       } else {
         _prefs.then((SharedPreferences prefs) {
           prefs.setInt('type', 1);
+          prefs.setString('id', user['_id']);
           prefs.setString('firstName', user['firstName']);
           prefs.setString('lastName', user['lastName']);
           prefs.setBool('sex', user['sex']);
@@ -73,5 +75,32 @@ class Accounts {
       print(response.body);
       return null;
     }
+  }
+
+  Future<dynamic> confirmAccount(Map user, String code) async {
+    var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up/verify';
+    var response = await post(
+      url,
+      body: {
+        'phoneNumber': user['phoneNumber'],
+        'code': code,
+        'sid': user['sid'],
+      },
+    );
+    if (response.statusCode == 200) {
+      user.putIfAbsent(response.body, () => 'id');
+      _prefs.then((SharedPreferences prefs) {
+        prefs.setInt('type', 0);
+        prefs.setString('id', user['_id']);
+        prefs.setString('firstName', user['firstName']);
+        prefs.setString('lastName', user['lastName']);
+        prefs.setString('sex', user['sex']);
+        prefs.setString('phoneNumber', user['phoneNumber']);
+        prefs.setString('mail', user['mail']);
+        prefs.setString('address', user['address']);
+      });
+      return user;
+    } else
+      return null;
   }
 }
