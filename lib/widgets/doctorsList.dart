@@ -103,7 +103,7 @@ class _DoctorsListState extends State<DoctorsList> {
                                   height: 250,
                                 ),
                               ),
-                              Divider(
+                              SizedBox(
                                 height: 10,
                               ),
                               Text(
