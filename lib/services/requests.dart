@@ -24,10 +24,19 @@ class Requests {
     // call http.get method and pass imageUrl into it to get response.
     var response = await http.get(imageUrl);
     // write bodyBytes received in response to file.
-    await file.writeAsBytes(response.bodyBytes);
-    // now return the file which is created with random name in
-    // temporary directory and image bytes from response is written to // that file.
-    return file;
+
+    if (response.statusCode == 404) {
+      response = await http.get('https://bit.ly/31NMFlo');
+      await file.writeAsBytes(response.bodyBytes);
+      // now return the file which is created with random name in
+      // temporary directory and image bytes from response is written to // that file.
+      return file;
+    } else {
+      await file.writeAsBytes(response.bodyBytes);
+      // now return the file which is created with random name in
+      // temporary directory and image bytes from response is written to // that file.
+      return file;
+    }
   }
 
   Future<List<CRequest>> getRequests(bool isDoctor) async {
