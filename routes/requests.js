@@ -46,8 +46,8 @@ router.get('/:id',async (req, res)=>{
 
 //Get today's and yesterday's requests of a doctor
 router.get('/:id/two', async (req,res)=> {
-    const today = moment.utc(moment())
-    const yesterday = moment.utc(moment()).subtract(1, 'day')
+    const today = moment.utc(moment()).format('yyyy-MM-DD')
+    const yesterday = moment.utc(moment()).subtract(1, 'day').format('yyyy-MM-DD')
     await Request.find({
         doctorId: req.params.id,
         date: {
