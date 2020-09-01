@@ -113,7 +113,7 @@ class _DoctorsListState extends State<DoctorsList> {
                                   fontSize: 20,
                                 ),
                               ),
-                              Divider(
+                              SizedBox(
                                 height: 10,
                               ),
                               Text(
@@ -123,7 +123,7 @@ class _DoctorsListState extends State<DoctorsList> {
                                   fontSize: 19,
                                 ),
                               ),
-                              Divider(
+                              SizedBox(
                                 height: 10,
                               ),
                               Text(
@@ -132,6 +132,9 @@ class _DoctorsListState extends State<DoctorsList> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 19,
                                 ),
+                              ),
+                              SizedBox(
+                                height: 10,
                               ),
                             ],
                           ),

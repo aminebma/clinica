@@ -31,17 +31,25 @@ class _RequestsListState extends State<RequestsList> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Center(
-            child: Text(
-              'Mes diagnostiques',
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'Lobster',
-              ),
-            ),
+            child: widget.isDoctor
+                ? Text(
+                    'Mes demandes',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontFamily: 'Lobster',
+                    ),
+                  )
+                : Text(
+                    'Mes diagnostiques',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontFamily: 'Lobster',
+                    ),
+                  ),
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
+          margin: EdgeInsets.only(top: 30),
           height: MediaQuery.of(context).size.height - 250,
           child: FutureBuilder(
             future: loadRequestsData(),

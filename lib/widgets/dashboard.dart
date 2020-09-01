@@ -70,7 +70,7 @@ class _DashBoardState extends State<DashBoard> {
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(30, 10, 30, 0),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: MediaQuery.of(context).size.height - 250,
           child: FutureBuilder(
             future: loadStats(),
