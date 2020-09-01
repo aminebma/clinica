@@ -45,7 +45,7 @@ router.get('/:id',async (req, res)=>{
 })
 
 //Get today's and yesterday's requests of a doctor
-router.get('/:id/all', async (req,res)=> {
+router.get('/:id/two', async (req,res)=> {
     const today = moment.utc(moment())
     const yesterday = moment.utc(moment()).subtract(1, 'day')
     await Request.find({
@@ -58,6 +58,12 @@ router.get('/:id/all', async (req,res)=> {
         if (err) throw err
         res.send(requests)
     })
+})
+
+//Get all requests of a doctor
+router.get('/:id/all', async(req, res)=>{
+    const requests = await Request.find({doctorId: req.params.id})
+    res.send(requests)
 })
 
 //Add a new request to the database
