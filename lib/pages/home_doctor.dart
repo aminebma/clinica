@@ -1,3 +1,4 @@
+import 'package:clinica/widgets/dashboard.dart';
 import 'package:clinica/widgets/requestsList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
     RequestsList(
       isDoctor: true,
     ),
-    Center(
-      child: Text(
-        'Tableau de bord en construction',
-        style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
+    DashBoard(),
   ];
   int _selectedIndex = 0;
 
