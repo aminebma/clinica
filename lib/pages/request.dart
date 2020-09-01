@@ -256,13 +256,9 @@ class _RequestState extends State<Request> {
       );
       Requests instance = Requests();
       var isCreated = await instance.newRequest(request);
-      if (isCreated) {
-        SnackBar snackBar = SnackBar(
-          content: Text('Demande de diagnostique envoyée avec succès !'),
-        );
-        _scaffoldKey.currentState.showSnackBar(snackBar);
+      if (isCreated)
         Navigator.pop(context);
-      } else {
+      else {
         SnackBar snackBar = SnackBar(
           content: Text("Une erreur s'est produite"),
         );

@@ -98,4 +98,21 @@ class Requests {
       return false;
     }
   }
+
+  Future<bool> answerRequest(String id, String diagnostic) async {
+    var url = 'https://clinicaapp.herokuapp.com/api/requests/response';
+    var response = await http.post(
+      url,
+      body: {
+        'id': id,
+        'answer': diagnostic,
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
 }
