@@ -166,7 +166,7 @@ class _AnswerRequestState extends State<AnswerRequest> {
       var isAnswered =
           await instance.answerRequest(widget._request.id, _response);
       if (isAnswered) {
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/home-doctor');
       } else {
         SnackBar snackBar = SnackBar(
           content: Text("Une erreur s'est produite"),
