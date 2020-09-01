@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:clinica/services/requests.dart';
 import 'package:clinica/models/crequest.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestsList extends StatefulWidget {
   bool isDoctor = false;
@@ -64,8 +63,8 @@ class _RequestsListState extends State<RequestsList> {
                         leading: Hero(
                           tag: 'request-${snapshot.data[index].id}',
                           child: ClipRRect(
-                            child: Image.network(
-                              '${snapshot.data[index].picture}',
+                            child: Image.file(
+                              snapshot.data[index].picture,
                               height: 50,
                               width: 50,
                             ),
@@ -73,11 +72,13 @@ class _RequestsListState extends State<RequestsList> {
                           ),
                         ),
                         title: Text(
-                          snapshot.data[index].symptoms[0],
+                          '${snapshot.data[index].date.day}-${snapshot.data[index].date.month}-${snapshot.data[index].date.year}',
                         ),
-                        subtitle: Text(
-                          snapshot.data[index].treatments,
-                        ),
+                        subtitle: snapshot.data[index].treatments.length == 0
+                            ? Text('Aucun traitement')
+                            : Text(
+                                snapshot.data[index].treatments,
+                              ),
                         trailing: snapshot.data[index].status == 'pending'
                             ? Wrap(
                                 spacing: 12,

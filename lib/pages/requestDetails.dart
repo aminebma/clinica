@@ -24,8 +24,8 @@ class RequestDetails extends StatelessWidget {
             children: [
               Hero(
                 tag: 'request-${_request.id}',
-                child: Image.network(
-                  "${_request.picture}",
+                child: Image.file(
+                  _request.picture,
                   scale: 1.0,
                   repeat: ImageRepeat.noRepeat,
                   fit: BoxFit.fitWidth,
@@ -45,11 +45,27 @@ class RequestDetails extends StatelessWidget {
                 ),
                 subtitle: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Traitements actuels: ${_request.treatments}',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                  child: _request.treatments.length == 0
+                      ? Text(
+                          'Aucun traitment',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        )
+                      : Text(
+                          'Traitements actuels: ${_request.treatments}',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Text(
+                  "Date d'envoi: ${_request.date.day}-${_request.date.month}-${_request.date.year}",
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
               ),

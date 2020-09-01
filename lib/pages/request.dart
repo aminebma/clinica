@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:clinica/models/doctor.dart';
 import 'package:clinica/models/crequest.dart';
@@ -21,11 +24,11 @@ class _RequestState extends State<Request> {
 
   bool isLoading = false;
 
-  BuildContext _context;
+  String _otherSymptoms = '', _treatments = '';
+  File _picture;
+  final picker = ImagePicker();
 
-  String _otherSymptoms, _treatments;
-
-  List<String> _symptoms,
+  List<String> _symptoms = [],
       _filters = [],
       _criteria = [
         'Fièvre',
@@ -40,6 +43,15 @@ class _RequestState extends State<Request> {
         'Gonflement',
         'Démangeaisons'
       ];
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _picture = File(pickedFile.path);
+      print(pickedFile.path);
+    });
+  }
 
   Widget _otherSymptomsField() {
     return Container(
@@ -182,8 +194,30 @@ class _RequestState extends State<Request> {
                   ),
                 ),
               ),
-              ListFilter(_criteria, _filters),
+              ListFilter(
+                _criteria,
+                _filters,
+              ),
               _newRequestForm(),
+              Center(
+                child: _picture == null ? null : Image.file(_picture),
+              ),
+              Center(
+                child: RaisedButton.icon(
+                  color: Colors.blue,
+                  label: Text(
+                    'Ajouter une photo',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.add_photo_alternate,
+                    color: Colors.white,
+                  ),
+                  onPressed: getImage,
+                ),
+              )
             ],
           ),
         ),
@@ -213,11 +247,12 @@ class _RequestState extends State<Request> {
       _filters.forEach((String symptom) {
         _symptoms.add(symptom);
       });
-      _symptoms.add(_otherSymptoms);
+      if (_otherSymptoms.length != 0) _symptoms.add(_otherSymptoms);
       CRequest request = CRequest(
         doctorId: widget._doctor.id,
         symptoms: _symptoms,
         treatments: _treatments,
+        picture: _picture,
       );
       Requests instance = Requests();
       var isCreated = await instance.newRequest(request);
@@ -226,7 +261,7 @@ class _RequestState extends State<Request> {
           content: Text('Demande de diagnostique envoyée avec succès !'),
         );
         _scaffoldKey.currentState.showSnackBar(snackBar);
-        Navigator.pop(_context);
+        Navigator.pop(context);
       } else {
         SnackBar snackBar = SnackBar(
           content: Text("Une erreur s'est produite"),

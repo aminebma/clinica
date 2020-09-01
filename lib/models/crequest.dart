@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class CRequest {
   String _id,
       _patientId,
@@ -5,24 +7,27 @@ class CRequest {
       _patientFirstName,
       _patientLastName,
       _treatments,
-      _picture,
       _response,
       _status;
 
+  DateTime _date;
   List<String> _symptoms;
+  File _picture;
 
   CRequest(
       {String id,
+      DateTime date,
       String patientId,
       String doctorId,
       String patientFirstName,
       String patientLastName,
       List<String> symptoms,
       String treatments,
-      String picture,
+      File picture,
       String response,
       String status})
       : _id = id,
+        _date = date,
         _patientId = patientId,
         _doctorId = doctorId,
         _patientFirstName = patientFirstName,
@@ -33,9 +38,15 @@ class CRequest {
         _response = response,
         _status = status;
 
-  String get picture => _picture;
+  get date => _date;
 
-  set picture(String value) {
+  set date(value) {
+    _date = value;
+  }
+
+  File get picture => _picture;
+
+  set picture(File value) {
     _picture = value;
   }
 
