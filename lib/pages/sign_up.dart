@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 import 'package:clinica/services/accounts.dart';
 
@@ -380,7 +379,6 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
       _signUpFormKey.currentState.save();
-//      var url = 'https://clinicaapp.herokuapp.com/api/accounts/sign-up';
       Map user = {
         'firstName': _firstName,
         'lastName': _lastName,
@@ -410,23 +408,6 @@ class _SignUpState extends State<SignUp> {
           isLoading = false;
         });
       }
-//      var response = await post(
-//        url,
-//        body: user,
-//      );
-//      if (response.statusCode == 200) {
-//        var sid = response.body;
-//        Navigator.pushNamed(_context, '/sign_up/verify', arguments: {
-//          'sid': sid,
-//          'firstName': user['firstName'],
-//          'lastName': user['lastName'],
-//          'sex': user['sex'],
-//          'address': user['address'],
-//          'mail': user['mail'],
-//          'phoneNumber': user['phoneNumber'],
-//        });
-//      } else
-//        print(response.body);
     }
   }
 }

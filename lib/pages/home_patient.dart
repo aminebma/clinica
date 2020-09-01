@@ -78,7 +78,8 @@ class _HomePatientState extends State<HomePatient> {
                 ),
               ),
               currentAccountPicture: Image.network(
-                  "https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg"),
+                "https://www.concordrusam.com/wp-content/uploads/2017/10/pro.jpg",
+              ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),

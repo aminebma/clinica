@@ -35,4 +35,24 @@ class Requests {
     }
     return requestsData;
   }
+
+  Future<bool> newRequest(CRequest request) async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var patientData = await _prefs.then((SharedPreferences prefs) {
+      return {
+        'patientId': prefs.getString('id'),
+        'patientFirstName': prefs.getString('firstName'),
+        'patientLastName': prefs.getString('lastName'),
+      };
+    });
+    //TODO Construct the body of the post request
+    var url = 'https://clinicaapp.herokuapp.com/api/requests/new';
+    var response = await post(url);
+    if (response.statusCode == 200)
+      return true;
+    else {
+      print(response.body);
+      return false;
+    }
+  }
 }

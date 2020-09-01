@@ -28,7 +28,7 @@ class _ListFilterState extends State<ListFilter> {
                 });
               }
             });
-            widget.onFilter();
+            if (widget.onFilter != null) widget.onFilter();
           },
         ),
       );
@@ -38,8 +38,11 @@ class _ListFilterState extends State<ListFilter> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Row(
-        children: criteriaWidgets.toList(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Row(
+          children: criteriaWidgets.toList(),
+        ),
       ),
       scrollDirection: Axis.horizontal,
     );
