@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,7 +68,7 @@ class Requests {
     var id =
         await _prefs.then((SharedPreferences prefs) => prefs.getString('id'));
     List<CRequest> requestsData = [];
-    var url = 'https://clinicaapp.herokuapp.com/api/requests/$id/all';
+    var url = 'https://clinicaapp.herokuapp.com/api/requests/$id/two';
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var requests = jsonDecode(response.body);
@@ -76,6 +77,23 @@ class Requests {
           id: request['_id'],
           date: DateTime.parse(request['date']),
         ));
+      }
+    }
+    return requestsData;
+  }
+
+  Future<List<String>> getAllRequestsDates() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var id =
+        await _prefs.then((SharedPreferences prefs) => prefs.getString('id'));
+    List<String> requestsData = [];
+    var url = 'https://clinicaapp.herokuapp.com/api/requests/$id/all';
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var requests = jsonDecode(response.body);
+      for (var request in requests) {
+        requestsData.add(
+            DateFormat('yyyy-MM-dd').format(DateTime.parse(request['date'])));
       }
     }
     return requestsData;
@@ -93,7 +111,7 @@ class Requests {
     var url = 'https://clinicaapp.herokuapp.com/api/requests/new';
     Dio dio = Dio();
     FormData body = FormData.fromMap({
-      "date": DateTime.now(),
+      "date": DateFormat('yyyy-MM-dd').format(DateTime.now()),
       "doctorId": request.doctorId,
       "patientId": patientData['patientId'],
       "patientFirstName": patientData['patientFirstName'],

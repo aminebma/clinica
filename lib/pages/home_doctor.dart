@@ -77,9 +77,11 @@ class _HomeDoctorState extends State<HomeDoctor> {
                   fontSize: 20,
                 ),
               ),
-              currentAccountPicture: Image.network(
-                _user['picture'],
-              ),
+              currentAccountPicture: _user['picture'] == null
+                  ? null
+                  : Image.network(
+                      _user['picture'],
+                    ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),

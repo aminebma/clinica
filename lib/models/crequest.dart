@@ -38,9 +38,9 @@ class CRequest {
         _response = response,
         _status = status;
 
-  get date => _date;
+  DateTime get date => _date;
 
-  set date(value) {
+  set date(DateTime value) {
     _date = value;
   }
 
