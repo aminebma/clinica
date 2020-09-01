@@ -1,3 +1,5 @@
+import 'package:clinica/widgets/requestsList.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +11,20 @@ class HomeDoctor extends StatefulWidget {
 class _HomeDoctorState extends State<HomeDoctor> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Map _user = {};
+  List<Widget> _displayedPage = [
+    RequestsList(
+      isDoctor: true,
+    ),
+    Center(
+        child: Text(
+      'Tableau de bord en construction',
+      style: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+      ),
+    )),
+  ];
+  int _selectedIndex = 0;
 
   void loadUserData() async {
     var userData = await _prefs.then((SharedPreferences prefs) {
@@ -23,6 +39,12 @@ class _HomeDoctorState extends State<HomeDoctor> {
     });
     setState(() {
       _user = userData;
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 
@@ -45,12 +67,55 @@ class _HomeDoctorState extends State<HomeDoctor> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.exit_to_app),
-        onPressed: () {
-          _prefs.then((SharedPreferences prefs) => prefs.clear());
-          Navigator.pushReplacementNamed(context, '/login');
-        },
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                "${_user['firstName'].toString().toUpperCase().substring(0, 1)}.${_user['lastName']}",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              accountEmail: Text(
+                "${_user['phoneNumber']}",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              currentAccountPicture: Image.network(
+                _user['picture'],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Se déconnecter'),
+              onTap: () {
+                _prefs.then((SharedPreferences prefs) => prefs.clear());
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+            )
+          ],
+        ),
+      ),
+      body: _displayedPage.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text("Accueil"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.equalizer),
+            title: Text("Tableau de bord"),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }

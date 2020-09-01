@@ -43,7 +43,7 @@ class Accounts {
           prefs.setString('id', user['_id']);
           prefs.setString('firstName', user['firstName']);
           prefs.setString('lastName', user['lastName']);
-          prefs.setBool('sex', user['sex']);
+          prefs.setString('sex', user['sex']);
           prefs.setString('phoneNumber', user['phoneNumber']);
           prefs.setString('speciality', user['speciality']);
           prefs.setString('picture',
