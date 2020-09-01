@@ -62,6 +62,25 @@ class Requests {
     return requestsData;
   }
 
+  Future<List<CRequest>> getTwoDaysRequests() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    var id =
+        await _prefs.then((SharedPreferences prefs) => prefs.getString('id'));
+    List<CRequest> requestsData = [];
+    var url = 'https://clinicaapp.herokuapp.com/api/requests/$id/all';
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var requests = jsonDecode(response.body);
+      for (var request in requests) {
+        requestsData.add(CRequest(
+          id: request['_id'],
+          date: DateTime.parse(request['date']),
+        ));
+      }
+    }
+    return requestsData;
+  }
+
   Future<bool> newRequest(CRequest request) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     var patientData = await _prefs.then((SharedPreferences prefs) {

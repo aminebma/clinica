@@ -16,13 +16,14 @@ class _HomeDoctorState extends State<HomeDoctor> {
       isDoctor: true,
     ),
     Center(
-        child: Text(
-      'Tableau de bord en construction',
-      style: TextStyle(
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
+      child: Text(
+        'Tableau de bord en construction',
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    )),
+    ),
   ];
   int _selectedIndex = 0;
 
