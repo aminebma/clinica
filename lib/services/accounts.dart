@@ -88,7 +88,7 @@ class Accounts {
       },
     );
     if (response.statusCode == 200) {
-      user.putIfAbsent(response.body, () => 'id');
+      user.putIfAbsent('id', () => response.body);
       _prefs.then((SharedPreferences prefs) {
         prefs.setInt('type', 0);
         prefs.setString('id', user['_id']);
