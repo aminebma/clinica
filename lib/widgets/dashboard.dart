@@ -4,6 +4,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:sortedmap/sortedmap.dart';
+import 'package:intl/intl.dart';
 
 import 'package:clinica/services/requests.dart';
 import 'package:clinica/models/crequest.dart';
@@ -32,12 +33,14 @@ class _DashBoardState extends State<DashBoard> {
       "Non-traitées": yesterdayRequests,
     };
     _taux = todayRequests == 0
-        ? 0
+        ? -100
         : (todayRequests - yesterdayRequests) * 100 / todayRequests;
     print('Pie chart statistics data loaded :D');
     print('Loading sparkline statistics data...');
     List<double> listOfStats = [];
     var countMap = SortedMap<String, double>(Ordering.byKey());
+    countMap.putIfAbsent(
+        DateFormat('yyyy-MM-dd').format(DateTime.now()), () => 0);
     var listOfRequests = await instance.getAllRequestsDates();
     listOfRequests.forEach((date) => countMap[date] =
         !countMap.containsKey(date) ? (1) : (countMap[date] + 1));
@@ -186,7 +189,7 @@ class _DashBoardState extends State<DashBoard> {
                                       ? '+${_taux.toStringAsFixed(2)} %'
                                       : '${_taux.toStringAsFixed(2)} %',
                                   style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 23,
                                     fontWeight: FontWeight.bold,
                                     color:
                                         _taux > 0 ? Colors.green : Colors.red,
