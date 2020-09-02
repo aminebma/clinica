@@ -34,7 +34,7 @@ class _DashBoardState extends State<DashBoard> {
     };
     _taux = todayRequests == 0
         ? -100
-        : (todayRequests - yesterdayRequests) * 100 / todayRequests;
+        : ((todayRequests - yesterdayRequests) / yesterdayRequests) * 100;
     print('Pie chart statistics data loaded :D');
     print('Loading sparkline statistics data...');
     List<double> listOfStats = [];
