@@ -85,6 +85,7 @@ class Requests {
         requestsData.add(CRequest(
           id: request['_id'],
           date: DateTime.parse(request['date']),
+          status: request['status'],
         ));
       }
     }

@@ -28,9 +28,12 @@ class _DashBoardState extends State<DashBoard> {
       ..removeWhere((CRequest element) => today.day != element.date.day);
     var todayRequests = listOfTodayRequests.length.toDouble();
     var yesterdayRequests = listOfTwoDaysRequests.length - todayRequests;
+    var listOfAnsweredRequests = List.of(listOfTodayRequests)
+      ..removeWhere((CRequest element) => element.status == 'pending');
+    var answeredRequests = listOfAnsweredRequests.length.toDouble();
     listOfTwoDaysStats = {
-      "Traitées": todayRequests,
-      "Non-traitées": yesterdayRequests,
+      "Traitées": answeredRequests,
+      "Non-traitées": todayRequests - answeredRequests,
     };
     _taux = todayRequests == 0
         ? -100
