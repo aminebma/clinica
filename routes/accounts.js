@@ -160,6 +160,8 @@ const accountsRoutes = [
     }
 ]
 
+module.exports = accountsRoutes
+
 //Validating the input data
 function validateAccount(patient){
     const schema = Joi.object({
