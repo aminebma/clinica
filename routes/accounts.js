@@ -1,5 +1,3 @@
-const express = require('express')
-const router = express.Router()
 const config = require('config')
 const Joi = require('@hapi/joi')
 const Boom = require('@hapi/boom')
@@ -110,86 +108,57 @@ const accountsRoutes = [
                     }
                 )
         }
+    }, {
+        //Connect a user
+        method: 'POST',
+        path: '/api/accounts/sign-in',
+        handler: async (request, h) => {
+            const payload = request.payload
+            const { error } = validateLogin(payload)
+            if (error) {
+                console.error(error)
+                throw Boom.badData(error)
+            }
+
+            await Patient.findOne({phoneNumber: payload.phoneNumber})
+                .then( async patient =>{
+                    if(!patient){
+                        await Doctor.findOne({phoneNumber: payload.phoneNumber})
+                            .then(async doctor => {
+                                if(!doctor) throw Boom.badRequest(`Incorrect phone number or password`)
+
+                                const validPass = (payload.password===doctor._doc.password) ? true : false
+                                if(!validPass) throw Boom.badRequest(`Incorrect phone number or password`)
+
+                                delete doctor._doc.password
+                                const token = jwt.sign({_id: doctor._doc._id}, config.get('auth.jwtPK'))
+                                doctor._doc.jwt = token
+                                doctor._doc.type = 1
+                                return doctor
+                            })
+                            .catch(e => {
+                                console.error(e)
+                                throw Boom.internal(e)
+                            })
+                    }
+                    else {
+                        const validPass = await bCrypt.compare(payload.password, patient._doc.password)
+                        if (!validPass) throw Boom.badRequest(`Incorrect phone number or password`)
+
+                        delete patient._doc.password
+                        const token = jwt.sign({_id: patient._doc._id}, config.get('auth.jwtPK'))
+                        patient._doc.jwt = token
+                        patient._doc.type = 0
+                        return patient
+                    }
+                })
+                .catch(e => {
+                    console.error(e)
+                    throw Boom.internal(e)
+                })
+        }
     }
 ]
-
-//Verifying the patient's account
-router.post('/sign-up/verify',async (req,res)=>{
-
-    await client.verify.services(payload.sid)
-        .verificationChecks
-        .create({to: payload.phoneNumber, code: payload.code})
-        .then(async verification_check => {
-            console.log(verification_check.status)
-            if(verification_check.status==='approved'){
-                const salt = await bCrypt.genSalt(10)
-                const pass = await bCrypt.hash(payload.code.toString(),salt)
-
-                try{
-                    const patient = await Patient.findOneAndUpdate({phoneNumber: payload.phoneNumber, status: 'pending'},{
-                        $set:{
-                            status: 'approved',
-                            password: pass
-                        }
-                    },{new: true, useFindAndModify: false})
-                    res.send(patient._id)
-                }catch(err){
-                    res.status(500).send(err.message)
-                }
-            }
-            else {
-                res.status(400).send(new Error('Le code entré est incorrect.'))
-            }
-        }).catch(
-            err => {
-                console.error(err)
-                res.send(err)
-            }
-        )
-})
-
-//Connecting
-router.post('/sign-in', async(req, res)=>{
-    const { error } = validateLogin(payload)
-    if(error) return res.status(400).send(error)
-
-    await Patient.findOne({phoneNumber: payload.phoneNumber})
-        .then(async patient =>{
-            if(!patient){
-                await Doctor.findOne({phoneNumber: payload.phoneNumber})
-                    .then(async doctor => {
-                        if(!doctor) return res.status(400).send('Incorrect phone number or password')
-
-                        const validPass = (payload.password===doctor._doc.password) ? true : false
-                        if(!validPass) return res.status(400).send('Incorrect phone number or password.')
-
-                        delete doctor._doc.password
-                        const token = jwt.sign({_id: doctor._doc._id}, config.get('auth.jwtPK'))
-                        doctor._doc.jwt = token
-                        doctor._doc.type = 1
-                        return res.send(doctor)
-                    })
-                    .catch(e => {
-                        console.error(e.message)
-                        res.send(e.message)
-                    })
-            }
-            else {
-                const validPass = await bCrypt.compare(payload.password, patient._doc.password)
-                if (!validPass) return res.status(400).send('Incorrect phone number or password.')
-
-                delete patient._doc.password
-                const token = jwt.sign({_id: patient._doc._id}, config.get('auth.jwtPK'))
-                patient._doc.jwt = token
-                patient._doc.type = 0
-                res.send(patient)
-            }
-        })
-        .catch(e => {
-            console.error(e.message)
-            res.send(e.message)
-        })
-})
 
 //Validating the input data
 function validateAccount(patient){
