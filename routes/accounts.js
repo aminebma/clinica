@@ -69,14 +69,52 @@ const accountsRoutes = [
                     }).catch(err => throw Boom.internal(err))
             }
         }
+    }, {
+        //Verifying the patient's account
+        method: 'POST',
+        path: '/api/accounts/sign-up/verify',
+        handler: async (request, h) => {
+            const payload = request.payload
+            const {error} = validateToken(payload)
+            if (error) {
+                console.error(error)
+                throw Boom.badData(error)
+            }
+
+            await client.verify.services(payload.sid)
+                .verificationChecks
+                .create({to: payload.phoneNumber, code: payload.code})
+                .then(async verification_check => {
+                    console.log(verification_check.status)
+                    if(verification_check.status==='approved'){
+                        const salt = await bCrypt.genSalt(10)
+                        const pass = await bCrypt.hash(payload.code.toString(),salt)
+
+                        try{
+                            const patient = await Patient.findOneAndUpdate({phoneNumber: payload.phoneNumber, status: 'pending'},{
+                                $set:{
+                                    status: 'approved',
+                                    password: pass
+                                }
+                            },{new: true, useFindAndModify: false})
+                            return patient._id
+                        } catch(err){
+                            throw Boom.internal(err)
+                        }
+                    }
+                    else throw Boom.badRequest(`Invalid code.`)
+                }).catch(
+                    err => {
+                        console.error(err)
+                        throw Boom.internal(err)
+                    }
+                )
+        }
     }
 ]
 
 //Verifying the patient's account
 router.post('/sign-up/verify',async (req,res)=>{
-
-    const {error} = validateToken(payload)
-    if(error) return res.status(400).send(error)
 
     await client.verify.services(payload.sid)
         .verificationChecks
