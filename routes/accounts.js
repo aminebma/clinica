@@ -41,8 +41,12 @@ const accountsRoutes = [
                                     } catch (err) {
                                         throw Boom.internal(err)
                                     }
-                                }).catch(err => throw Boom.internal(err))
-                        }).catch(err => throw Boom.internal(err))
+                                }).catch(err => {
+                                    throw Boom.internal(err)
+                                })
+                        }).catch(err => {
+                            throw Boom.internal(err)
+                        })
                 }
             } else {
                 patient = new Patient(_.pick(payload, ['firstName', 'lastName', 'sex', 'address', 'phoneNumber', 'mail']))
@@ -63,8 +67,12 @@ const accountsRoutes = [
                                 } catch (err) {
                                     throw Boom.internal(err)
                                 }
-                            }).catch(err => throw Boom.internal(err))
-                    }).catch(err => throw Boom.internal(err))
+                            }).catch(err => {
+                                throw Boom.internal(err)
+                            })
+                    }).catch(err => {
+                        throw Boom.internal(err)
+                    })
             }
         }
     }, {

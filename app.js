@@ -44,10 +44,15 @@ const init = async () => {
         host: serverIp
     })
 
+    //Accounts routes
+    server.route(require('./routes/accounts'))
+
     //Requests routes
     server.route(require('./routes/requests'))
+
     //Doctors routes
     server.route(require('./routes/doctors'))
+
 
     try{
         await server.start()
