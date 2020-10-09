@@ -179,4 +179,4 @@ function validateLogin(account){
     return schema.validate(account)
 }
 
-module.exports = router
+//module.exports = router

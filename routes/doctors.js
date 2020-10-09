@@ -1,13 +1,16 @@
-const express = require('express')
-const router = express.Router()
+const Boom = require('@hapi/boom')
 const Doctor = require('../models/doctor')
 
-//Get all doctors
-router.get('/', async (req, res) => {
-    await Doctor.find({},{password: 0},(err, doctors)=>{
-        if(err) throw err
-        res.send(doctors)
-    })
-})
+const doctorsRoutes = [{
+    method: 'GET',
+    path: '/api/doctors/',
+    handler: async (request, h) => {
+        const doctors = await Doctor.find({},{password: 0})
 
-module.exports = router
+        if(!doctors) throw Boom.notFound(`Aucun médecin disponible.`)
+
+        return doctors
+    }
+}]
+
+module.exports = doctorsRoutes

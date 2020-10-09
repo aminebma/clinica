@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('@hapi/joi')
+const Boom = require('@hapi/boom')
 const moment = require('moment')
 const multer = require('multer')
 const storageManager = multer.diskStorage({
@@ -32,39 +33,63 @@ const imageUpload = multer({
 })
 const Request = require('../models/request')
 
+const requestsRoutes = [
+    {
+        //Get a patient's requests
+        method: 'GET',
+        path: '/api/requests/patient/{id}',
+        handler: async (request, h) => {
+            const requests = await Request.find({patientId: request.params.id})
 
-router.get('/patient/:id', async (req, res)=>{
-    const requests = await Request.find({patientId: req.params.id})
-    res.send(requests)
-})
+            if(!request) throw Boom.notFound(`No request found.`)
 
-//Get a doctor's pending requests
-router.get('/:id',async (req, res)=>{
-    const requests = await Request.find({doctorId: req.params.id, status: 'pending'})
-    res.send(requests)
-})
-
-//Get today's and yesterday's requests of a doctor
-router.get('/:id/two', async (req,res)=> {
-    const today = moment.utc(moment()).format('yyyy-MM-DD')
-    const yesterday = moment.utc(moment()).subtract(1, 'day').format('yyyy-MM-DD')
-    await Request.find({
-        doctorId: req.params.id,
-        date: {
-            $gte: yesterday,
-            $lte: today
+            return requests
         }
-    }, async (err, requests) => {
-        if (err) throw err
-        res.send(requests)
-    })
-})
+    },{
+        //Get a doctor's pending requests
+        method: 'GET',
+        path: '/api/requests/{id}',
+        handler: async (request, h) => {
+            const requests = await Request.find({doctorId: request.params.id, status: 'pending'})
 
-//Get all requests of a doctor
-router.get('/:id/all', async(req, res)=>{
-    const requests = await Request.find({doctorId: req.params.id})
-    res.send(requests)
-})
+            if(!requests) throw Boom.notFound(`No request found.`)
+
+            return requests
+        }
+    }, {
+        //Get all requests of a doctor
+        method: 'GET',
+        path: 'api/requests/{id}/all',
+        handler: async (request, h) => {
+            const requests = await Request.find({doctorId: req.params.id})
+
+            if(!requests) Boom.notFound(`No request found.`)
+
+            return requests
+        }
+    },{
+        //Get today's and yesterday's requests of a doctor
+        method: 'GET',
+        path: '/api/requests/{id}/two',
+        handler: async (request, h) => {
+            const today = moment.utc(moment()).format('yyyy-MM-DD')
+            const yesterday = moment.utc(moment()).subtract(1, 'day').format('yyyy-MM-DD')
+            const requests = await Request.find({
+                doctorId: request.params.id,
+                date: {
+                    $gte: yesterday,
+                    $lte: today
+                }
+            })
+
+            if(!requests) throw Boom.notFound(`No request found.`)
+
+            return requests
+        }
+    }
+]
+
+module.exports = requestsRoutes
 
 //Add a new request to the database
 router.post('/new', imageUpload.single('picture'),async (req, res)=>{
@@ -119,4 +144,4 @@ router.post('/response',async (req, res)=>{
 //     return schema.validate(request)
 // }
 
-module.exports = router
+//module.exports = router
