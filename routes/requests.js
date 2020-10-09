@@ -59,11 +59,11 @@ const requestsRoutes = [
     }, {
         //Get all requests of a doctor
         method: 'GET',
-        path: 'api/requests/{id}/all',
+        path: '/api/requests/{id}/all',
         handler: async (request, h) => {
             const requests = await Request.find({doctorId: req.params.id})
 
-            if(!requests) Boom.notFound(`No request found.`)
+            if(!requests) throw Boom.notFound(`No request found.`)
 
             return requests
         }
@@ -85,6 +85,21 @@ const requestsRoutes = [
             if(!requests) throw Boom.notFound(`No request found.`)
 
             return requests
+        }
+    },{
+        //Answering a request
+        method: 'POST',
+        path: '/api/requests/response',
+        handler: async (request, h) => {
+            const response = request.payload.answer.replace(/[#\\<>]/gi,'')
+            const updatedRequest = await Request.findByIdAndUpdate(request.payload.id,{
+                $set:{
+                    response: response,
+                    status: 'answered'
+                }
+            },{new: true, useFindAndModify: false})
+
+            return updatedRequest._id
         }
     }
 ]
@@ -116,18 +131,6 @@ router.post('/new', imageUpload.single('picture'),async (req, res)=>{
     }
 })
 
-//Answering a request
-router.post('/response',async (req, res)=>{
-    const response = req.body.answer.replace(/[#\\<>]/gi,'')
-    const updatedRequest =await Request.findByIdAndUpdate(req.body.id,{
-        $set:{
-            response: response,
-            status: 'answered'
-        }
-    },{new: true, useFindAndModify: false})
-    res.send(updatedRequest._id)
-})
-
 // //Validating the input data
 // function validateRequest(request){
 //     const schema = Joi.object({
@@ -143,5 +146,3 @@ router.post('/response',async (req, res)=>{
 //
 //     return schema.validate(request)
 // }
-
-//module.exports = router
