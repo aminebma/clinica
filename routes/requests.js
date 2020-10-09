@@ -91,8 +91,9 @@ const requestsRoutes = [
         method: 'POST',
         path: '/api/requests/response',
         handler: async (request, h) => {
-            const response = request.payload.answer.replace(/[#\\<>]/gi,'')
-            const updatedRequest = await Request.findByIdAndUpdate(request.payload.id,{
+            const payload = request.payload
+            const response = payload.answer.replace(/[#\\<>]/gi,'')
+            const updatedRequest = await Request.findByIdAndUpdate(payload.id,{
                 $set:{
                     response: response,
                     status: 'answered'
