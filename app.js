@@ -39,6 +39,3 @@ const port = config.get("server.port")
 
 //Starting the server
 app.listen(process.env.PORT, () => console.log(`Listening on port ${port}`))
-
-
-
