@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi')
 const Inert = require('inert')
+const Path = require('path')
 // const helmet = require('helmet')
 // const compression = require('compression')
 const morgan = require('morgan')
@@ -30,7 +31,7 @@ const init = async () => {
 
     const server = Hapi.server({
         port: serverPort,
-        host: serverIp
+        host: serverIp,
     })
 
     await server.register(Inert)
@@ -44,6 +45,15 @@ const init = async () => {
     //Doctors routes
     server.route(require('./routes/doctors'))
 
+    server.route({
+        method: 'GET',
+        path: '/images/{filename*}',
+        handler: {
+            directory: {
+                path: 'public/images'
+            }
+        }
+    })
 
     try{
         await server.start()

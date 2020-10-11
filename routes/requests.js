@@ -1,5 +1,3 @@
-const express = require('express')
-const router = express.Router()
 const Joi = require('@hapi/joi')
 const Boom = require('@hapi/boom')
 const moment = require('moment')
@@ -76,8 +74,8 @@ const requestsRoutes = [
     },{
         //Add a new request
         method: 'POST',
-        path: '/api/new',
-        options: {
+        path: '/api/requests/new',
+        options:{
             payload: {
                 output: 'stream',
                 multipart: true
@@ -85,9 +83,26 @@ const requestsRoutes = [
         },
         handler: async(request, h) => {
             const { payload } = request
-
             const response = handleFileUpload(payload.file)
-            return response
+            let req = new Request({
+                date: payload.date,
+                patientId: payload.patientId,
+                doctorId: payload.doctorId,
+                patientFirstName: payload.patientFirstName,
+                patientLastName: payload.patientLastName,
+                symptoms: payload.symptoms,
+                treatments: payload.treatments,
+                picture: moment().format('DD-MM-YYYY') + '-' + Math.floor(Math.random() * (99999 - 11111) + 11111) + '-' + payload.file.hapi.filename,
+                status: 'pending'
+            })
+
+            try {
+                req = await req.save()
+                console.log(`Request added successfully.`)
+                return req._id
+            } catch (err) {
+                throw Boom.internal(err)
+            }
         }
     },{
         //Answering a request
@@ -109,28 +124,3 @@ const requestsRoutes = [
 ]
 
 module.exports = requestsRoutes
-
-//Add a new request to the database
-// router.post('/new', imageUpload.single('picture'),async (req, res)=>{
-//     // const {error} = validateRequest(req.body)
-//     // if(error) return res.status(400).send(error)
-//
-//     let request = new Request({
-//         date: req.body.date,
-//         patientId: req.body.patientId,
-//         doctorId: req.body.doctorId,
-//         patientFirstName: req.body.patientFirstName,
-//         patientLastName: req.body.patientLastName,
-//         symptoms: req.body.symptoms,
-//         treatments: req.body.treatments,
-//         picture: req.file.filename,
-//         status: 'pending'
-//     })
-//
-//     try {
-//         request = await request.save()
-//         res.send(request._id)
-//     } catch (err) {
-//         res.status(500).send(err.message)
-//     }
-// })
