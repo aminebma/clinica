@@ -1,19 +1,9 @@
 const Hapi = require('@hapi/hapi')
 const Inert = require('inert')
-const Path = require('path')
-// const helmet = require('helmet')
-// const compression = require('compression')
-const morgan = require('morgan')
 const mongoose = require('mongoose')
 const configIndex = require('./config/index')
 const config = require('config')
 
-// //Middlewares
-// app.use(express.static('public'))
-// app.use(helmet())
-// app.use(compression())
-// if(app.get('env') === 'development')
-//     app.use(morgan('tiny'))
 
 //Connecting to the database
 mongoose.connect(configIndex.getDbConnectionString(), {useNewUrlParser: true, useUnifiedTopology: true})
